@@ -1,15 +1,15 @@
 import { Box, Button, Container, Icon, InputAdornment, Modal, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect } from "react";
-import SecondaryAppbar from "../components/SecondaryAppbar";
-import { Add, Mail, Phone, Search } from "@mui/icons-material";
+import { Mail, Phone, Search } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import PositionModal from "./NewApplicant/PositionModal";
-import AddEmployee from "./AddEmployees/AddEmployee";
-import { getApplicants } from "./NewApplicant/applicantsSlice";
+import { getEmployee } from "../AddEmployees/employeesSlice";
+import { useFormik } from "formik";
+import SearchEmployeeModal from "./SearchEmployeeModal";
+import { getLeaves } from "./LeaveSlice";
 const useStyles = makeStyles((theme) => {
   return {
-    recruitement: {
+    leaves: {
       marginTop: "6rem",
       padding: "2rem 0rem",
       width: "100%",
@@ -40,28 +40,28 @@ const useStyles = makeStyles((theme) => {
       fontSize: "1.4rem",
       border: 0,
       background: "#fafafa",
+      width: "33%",
     },
   };
 });
-function Recruitment() {
+function Leaves() {
   const classes = useStyles();
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const dispatch = useDispatch();
-  const { applicantsData } = useSelector((state) => state.applicants);
-  const applicants = applicantsData.applicants;
-  console.log(applicants);
-  console.log(applicantsData);
+  const { leaveInformation } = useSelector((state) => state.leaves);
+
+  let staffOnLeave = leaveInformation.employees;
+  console.log(staffOnLeave);
 
   useEffect(() => {
-    dispatch(getApplicants());
+    dispatch(getLeaves());
   }, []);
 
   return (
-    <div className={classes.recruitement}>
+    <div className={classes.leaves}>
       <Container>
-        <SecondaryAppbar title="Employee" button="New Applicant" link="/recruitment/applicant" />
         <table className={classes.table} border={1}>
           <thead className={classes.tableHead}>
             <td className={classes.td}>
@@ -77,11 +77,10 @@ function Recruitment() {
                     fontSize: "1.4rem",
                   }}
                   onClick={handleModalOpen}
-                  startIcon={<Add />}
                 >
-                  Add Job Position
+                  Submit Leave
                 </Button>
-                <PositionModal handleModalClose={handleModalClose} handleModalOpen={modalOpen} />
+                <SearchEmployeeModal handleModalClose={handleModalClose} modalOpen={modalOpen} />
               </div>
             </td>
             <td className={classes.td}></td>
@@ -115,19 +114,20 @@ function Recruitment() {
               Contact
             </th>
             <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
-              Applied For
+              Days Left
             </th>
           </tr>
-          {applicants?.map((row) => {
+          {staffOnLeave?.map((row) => {
             return (
               <tr>
-                <td className={classes.td} style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-                  <img src="" alt="" className={classes.employeeImage} />
+                <td className={classes.td} style={{ display: "flex", alignItems: "center", gap: "2rem", width: "100%" }}>
+                  <img src={row.image} alt="" className={classes.employeeImage} />
                   <div>
                     <strong>
-                      {row.first_name} {row.last_name}
+                      {row.first_name} {row.middle_name} {row.last_name}
                     </strong>{" "}
-                    <br /> Title: <strong>{row.title}</strong>
+                    <br />
+                    <strong>{row.currentjob.position.name}</strong>
                   </div>
                 </td>
                 <td className={classes.td}>
@@ -152,7 +152,7 @@ function Recruitment() {
                   </div>
                 </td>
                 <td className={classes.td}>
-                  <div>{row.position?.name}</div>
+                  <div>{row.status}</div>
                   <div>{row.subtitle}</div>
                 </td>
               </tr>
@@ -164,4 +164,4 @@ function Recruitment() {
   );
 }
 
-export default Recruitment;
+export default Leaves;

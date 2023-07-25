@@ -1,23 +1,16 @@
 import { ThemeProvider, createTheme } from "@mui/material";
 import "./App.css";
 import Layout from "./components/Layout";
-import {
-  Route,
-  Router,
-  RouterProvider,
-  Routes,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from "react-router-dom";
+import { Route, Router, RouterProvider, Routes, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
-import AddEmployee from "./Pages/AddEmployee";
+import AddEmployee from "./Pages/AddEmployees/AddEmployee";
 import Recruitment from "./Pages/Recruitment";
-import NewApplicant from "./Pages/NewApplicant";
-import Leaves from "./Pages/Leaves";
+import Leaves from "./Pages/Leaves/Leaves";
 import Appraisal from "./Pages/Appraisal";
 import Awards from "./Pages/Awards";
 import Report from "./Pages/Report";
-import Signin from "./Pages/Signin";
+import Signin from "./Pages/Auth/Signin";
+import NewApplicant from "./Pages/NewApplicant/NewApplicant";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 const theme = createTheme({
@@ -61,9 +54,9 @@ function App({ children }) {
         <Route index element={<Signin />}></Route>
         <Route path="/" element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />}></Route>
-          <Route path="/addemployee" element={<AddEmployee />}></Route>
+          <Route path="/dashboard/addemployee" element={<AddEmployee />}></Route>
           <Route path="/recruitment" element={<Recruitment />}></Route>
-          <Route path="/newapplicant" element={<NewApplicant />}></Route>
+          <Route path="/recruitment/applicant" element={<NewApplicant />}></Route>
           <Route path="/leaves" element={<Leaves />}></Route>
           <Route path="/appraisal" element={<Appraisal />}></Route>
           <Route path="/awards" element={<Awards />}></Route>

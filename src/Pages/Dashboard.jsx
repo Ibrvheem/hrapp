@@ -1,19 +1,11 @@
 import { Add, Mail, Phone } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, IconButton, Paper, Typography } from "@mui/material";
 import { makeStyles, styled } from "@mui/styles";
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SecondaryAppbar from "../components/SecondaryAppbar";
 import { useDispatch, useSelector } from "react-redux";
-import { getEmployees } from "../store/employeesSlice";
-
+import { getEmployees } from "./AddEmployees/employeesSlice";
 const useStyles = makeStyles(() => {
   return {
     dashboard: {
@@ -82,52 +74,36 @@ function Dashboard() {
   return (
     <div className={classes.dashboard}>
       <Container>
-        <SecondaryAppbar
-          title="Employee"
-          button="Add Employee"
-          link="/addemployee"
-        />
+        <SecondaryAppbar title="Employee" button="Add Employee" link="/dashboard/addemployee" />
         <table className={classes.table} border={1}>
           <thead className={classes.tableHead}>
             <div></div>
           </thead>
 
           <tr>
-            <th
-              className={classes.td}
-              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
-            >
+            <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
               Employee
             </th>
-            <th
-              className={classes.td}
-              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
-            >
+            <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
               Contact
             </th>
-            <th
-              className={classes.td}
-              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
-            >
+            <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
               Status
             </th>
           </tr>
           {employees?.map((employee) => {
             return (
               <tr>
-                <td
-                  className={classes.td}
-                  style={{ display: "flex", alignItems: "center", gap: "2rem" }}
-                >
+                <td className={classes.td} style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
                   <img src="" alt="" className={classes.employeeImage} />
                   <div>
                     <strong>
-                      {employee.first_name} {employee.last_name}
+                      {employee?.first_name} {employee?.last_name}
                     </strong>{" "}
                     <br /> Title:{" "}
                     <strong>
                       {employee.jobs.map((job) => {
-                        return job.position.name;
+                        return job?.position?.name;
                       })}
                     </strong>
                   </div>
@@ -150,12 +126,21 @@ function Dashboard() {
                     }}
                   >
                     <Phone color="primary" />
-                    {employee.phone}
+                    {employee?.phone}
                   </div>
                 </td>
                 <td className={classes.td}>
-                  <div>{employee.status}</div>
-                  <div>{employee.subtitle}</div>
+                  <div>
+                    {employee?.jobs.map((job) => {
+                      return <strong>{job.type.toUpperCase()}</strong>;
+                    })}
+                  </div>
+                  <div>
+                    {employee?.jobs.map((job) => {
+                      return job.position.name;
+                    })}
+                  </div>
+                  <div>{employee?.subtitle}</div>
                 </td>
               </tr>
             );

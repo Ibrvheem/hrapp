@@ -3,7 +3,9 @@ import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../store/authSlice";
+import { getUser } from "./authSlice";
+import { BeatLoader, ClipLoader } from "react-spinners";
+
 const useStyles = makeStyles((theme) => {
   return {
     signin: {
@@ -29,13 +31,18 @@ function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
 
   const handleSignIn = () => {
+    setLoader(true);
     dispatch(getUser({ email, password })).then((action) => {
       const userToken = action?.payload?.token;
       if (userToken) {
+        setLoader(false);
         navigate("/dashboard");
+      } else {
+        setLoader(false);
       }
     });
   };
@@ -58,9 +65,7 @@ function Signin() {
       >
         <div>
           <Typography variant="h3">Welcome</Typography>
-          <Typography variant="h4">
-            Fill in your credentials to log in
-          </Typography>
+          <Typography variant="h4">Fill in your credentials to log in</Typography>
         </div>
         <Card className={classes.signInCard} elevation={0}>
           <Typography variant="h4">Sign in</Typography>
@@ -75,6 +80,7 @@ function Signin() {
           <TextField
             variant="standard"
             label="Password"
+            type="password"
             fullWidth
             onChange={(e) => {
               setPassword(e.target.value);
@@ -91,7 +97,7 @@ function Signin() {
             }}
             onClick={handleSignIn}
           >
-            Proceed
+            {loader ? <ClipLoader size={15} color="white" /> : "Proceed"}
           </Button>
         </Card>
       </Container>

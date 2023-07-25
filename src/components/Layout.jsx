@@ -1,32 +1,9 @@
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Container,
-  CssBaseline,
-  Divider,
-  Drawer,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Avatar, Box, Container, CssBaseline, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import {
-  AdsClick,
-  EmojiEvents,
-  Home,
-  LibraryBooks,
-  PersonAdd,
-  Timer,
-} from "@mui/icons-material";
+import { AdsClick, EmojiEvents, Home, LibraryBooks, PersonAdd, Timer } from "@mui/icons-material";
 import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 const drawerWidth = 240;
@@ -90,19 +67,10 @@ function Layout({ children, props }) {
             alignIten: "center",
           }}
         >
-          <Typography
-            variant="body1"
-            color="textSecondary"
-            noWrap
-            component="body1"
-          >
+          <Typography variant="body1" color="textSecondary" noWrap component="body1">
             Employees
           </Typography>
-          <Avatar
-            alt="User"
-            src="/static/images/avatar/1.jpg"
-            sx={{ border: "2px solid #2fd5c8" }}
-          />
+          <Avatar alt="User" src="/static/images/avatar/1.jpg" sx={{ border: "2px solid #2fd5c8" }} />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -124,39 +92,37 @@ function Layout({ children, props }) {
         <Divider />
         <List>
           {drawerNav.map((nav) => (
-            <>
-              <ListItem
-                key={nav.name}
-                disablePadding
-                style={{
-                  color: location.pathname == nav.path ? "#2fd5c8" : null,
-                }}
-                onClick={() => {
-                  navigate(nav.path);
-                }}
-              >
-                <ListItemButton>
-                  <ListItemIcon
+            <ListItem
+              key={nav.name}
+              disablePadding
+              style={{
+                color: location.pathname && location.pathname.includes(nav.path) ? "#2fd5c8" : null,
+              }}
+              onClick={() => {
+                navigate(nav.path);
+              }}
+            >
+              <ListItemButton>
+                <ListItemIcon
+                  style={{
+                    color: location.pathname && location.pathname.includes(nav.path) ? "#2fd5c8" : null,
+                  }}
+                >
+                  {nav.icon}
+                </ListItemIcon>
+                <ListItemText primary={nav.name} />
+                {location.pathname && location.pathname.includes(nav.path) ? (
+                  <div
                     style={{
-                      color: location.pathname == nav.path ? "#2fd5c8" : null,
+                      height: "1rem",
+                      width: "1rem",
+                      borderRadius: "50%",
+                      backgroundColor: "#2fd5c8",
                     }}
-                  >
-                    {nav.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={nav.name} />
-                  {location.pathname == nav.path ? (
-                    <div
-                      style={{
-                        height: "1rem",
-                        width: "1rem",
-                        borderRadius: "50%",
-                        backgroundColor: "#2fd5c8",
-                      }}
-                    ></div>
-                  ) : null}
-                </ListItemButton>
-              </ListItem>
-            </>
+                  ></div>
+                ) : null}
+              </ListItemButton>
+            </ListItem>
           ))}
         </List>
       </Drawer>
