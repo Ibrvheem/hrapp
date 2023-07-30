@@ -1,10 +1,8 @@
-import { Box, Button, Container, Icon, InputAdornment, Modal, TextField, Typography } from "@mui/material";
+import { Button, Container, Icon, InputAdornment, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect } from "react";
 import { Mail, Phone, Search } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { getEmployee } from "../AddEmployees/employeesSlice";
-import { useFormik } from "formik";
 import SearchEmployeeModal from "./SearchEmployeeModal";
 import { getLeaves } from "./LeaveSlice";
 const useStyles = makeStyles((theme) => {

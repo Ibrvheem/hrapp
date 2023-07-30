@@ -6,7 +6,6 @@ import { useLocation } from "react-router-dom";
 
 function PersonalInformation({ formik }) {
   const location = useLocation();
-  console.log(formik.values);
   function formatDate(arg) {
     const formattedDate = new Date(arg);
     const year = formattedDate.getFullYear();

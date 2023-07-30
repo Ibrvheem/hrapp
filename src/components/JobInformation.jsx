@@ -7,16 +7,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getPositions } from "../Pages/NewApplicant/positionsSlice";
 
 function JobInformation({ formik }) {
-  console.log(formik.values);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { positions: allPositions } = useSelector((state) => state.positions);
-  console.log(allPositions);
 
   useEffect(() => {
     dispatch(getPositions());
   }, []);
+  function formatDate(arg) {
+    const formattedDate = new Date(arg);
+    const year = formattedDate.getFullYear();
+    const month = String(formattedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(formattedDate.getDate()).padStart(2, "0");
+    const formattedDateString = `${year}-${month}-${day}`;
+    return formattedDateString;
+  }
 
   return (
     <div>
@@ -65,20 +71,22 @@ function JobInformation({ formik }) {
                 </FormControl>
               </Grid>
               <Grid item md={4}>
-                <TextField label="Salary" fullWidth />
+                <TextField label="Salary" fullWidth name="job.salary" {...formik.getFieldProps("job.salary")} />
               </Grid>
               <Grid item md={4}>
-                <TextField label="Bonus" fullWidth />
+                <TextField label="Bonus" fullWidth name="job.bonus" {...formik.getFieldProps("job.bonus")} />
               </Grid>
               <Grid item md={4}>
-                <TextField label="Annual Leave Days Allowed" required fullWidth />
+                <TextField label="Annual Leave Days Allowed" required fullWidth name="job.leave_days" {...formik.getFieldProps("job.leave_days")} />
               </Grid>
               <Grid item md={4}>
                 <FormControl fullWidth>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <MobileTimePicker
                       label="Office Reporting Hour *"
-                      // defaultValue={dayjs("2022-04-17T15:30")}
+                      onChange={(value) => {
+                        formik.setFieldValue("job.reporting_hour", new Date(value).toLocaleTimeString());
+                      }}
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -89,7 +97,9 @@ function JobInformation({ formik }) {
                     <MobileTimePicker
                       required
                       label="Office Closing Hour *"
-                      // defaultValue={dayjs("2022-04-17T15:30")}
+                      onChange={(value) => {
+                        formik.setFieldValue("job.closing_hour", new Date(value).toLocaleTimeString());
+                      }}
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -97,7 +107,15 @@ function JobInformation({ formik }) {
               <Grid item md={4}>
                 <FormControl fullWidth>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker label="Employemnt Start Date *" required fullWidth />
+                    <DatePicker
+                      label="Employemnt Start Date *"
+                      required
+                      fullWidth
+                      onChange={(value) => {
+                        formik.setFieldValue("job.start_date", formatDate(value));
+                      }}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
                   </LocalizationProvider>{" "}
                 </FormControl>
               </Grid>
