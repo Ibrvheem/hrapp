@@ -4,6 +4,7 @@ import applicantsSlice from "../Pages/NewApplicant/applicantsSlice";
 import employeesSlice from "../Pages/AddEmployees/employeesSlice";
 import authSlice from "../Pages/Auth/authSlice";
 import LeaveSlice from "../Pages/Leaves/LeaveSlice";
+import appraisalsSlice from "../Pages/Appraisals/appraisalsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     applicants: applicantsSlice,
     positions: positionsSlice,
     leaves: LeaveSlice,
+    appraisals: appraisalsSlice,
   },
 });

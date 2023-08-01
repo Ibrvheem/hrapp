@@ -1,28 +1,24 @@
 import {
-  ArrowDownward,
-  ArrowDropDown,
-  DeleteForever,
-  KeyboardArrowDown,
-} from "@mui/icons-material";
-import {
-  AppBar,
   Box,
   Button,
   Card,
   Container,
-  Fade,
   Grid,
-  IconButton,
-  Menu,
-  MenuItem,
   Modal,
   TextField,
-  Toolbar,
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAppraisals,
+  postAppraisal,
+  postEvaluationItem,
+  updateAppraisal,
+  updateEvaluationItem,
+} from "./Appraisals/appraisalsSlice";
+import EvaluationItem from "./Appraisals/evaluationItem";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -56,18 +52,57 @@ const useStyles = makeStyles((theme) => {
 });
 function Appraisal() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const dispatch = useDispatch();
+  const { appraisalsData } = useSelector((state) => state.appraisals);
+
+  useEffect(() => {
+    dispatch(getAppraisals());
+  }, []);
+
+  const [modalOpen, setModalOpen] = React.useState({ add: false, edit: false });
+  const [itemModal, setItemModal] = useState({ add: false, edit: false });
+  const [evaluationItem, setEvaluationItem] = useState({
+    name: "",
+    groupId: null,
+  });
+  const [groupFormData, setGroupFormData] = useState({ name: "" });
+
+  const handleModalOpen = (action, name = "", id = null) => {
+    setGroupFormData({ name, id });
+    setModalOpen(
+      action === "add" ? { add: true, edit: false } : { add: false, edit: true }
+    );
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleModalClose = () => setModalOpen({ add: false, edit: false });
+
+  const handleSubmitGroupForm = () => {
+    dispatch(
+      modalOpen.add
+        ? postAppraisal(groupFormData)
+        : updateAppraisal(groupFormData)
+    );
+    setModalOpen({ add: false, edit: false });
   };
 
-  const [modalOpen, setModalOpen] = React.useState(false);
-  const handleModalOpen = () => setModalOpen(true);
-  const handleModalClose = () => setModalOpen(false);
+  const handleItemModalOpen = (groupId, action, item = {}) => {
+    setItemModal(
+      action === "add" ? { add: true, edit: false } : { add: false, edit: true }
+    );
+    setEvaluationItem(() => ({
+      groupId: groupId || null,
+      name: item.name,
+      evaluationItemId: item.id || null,
+    }));
+  };
+
+  const handleAddEvaluationItem = () => {
+    setItemModal({ add: false, edit: false });
+    dispatch(postEvaluationItem(evaluationItem));
+  };
+  const handleEditEvaluationItem = () => {
+    setItemModal({ add: false, edit: false });
+    dispatch(updateEvaluationItem(evaluationItem));
+  };
 
   return (
     <div className={classes.appraisal}>
@@ -83,7 +118,7 @@ function Appraisal() {
             >
               <div>
                 <Button
-                  onClick={handleModalOpen}
+                  onClick={() => handleModalOpen("add")}
                   size="large"
                   variant="contained"
                   sx={{ color: "white", fontWeight: 700 }}
@@ -91,7 +126,7 @@ function Appraisal() {
                   Add Form
                 </Button>
                 <Modal
-                  open={modalOpen}
+                  open={modalOpen.add || modalOpen.edit}
                   onClose={handleModalClose}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
@@ -102,10 +137,19 @@ function Appraisal() {
                       variant="h6"
                       component="h2"
                     >
-                      Add Evaluation Item
+                      {modalOpen.add
+                        ? "Add Appraisal Group"
+                        : "Edit Appraisal Group"}
                     </Typography>
                     <TextField
-                      label="Evaluation Item"
+                      onChange={(ev) =>
+                        setGroupFormData((prev) => ({
+                          ...prev,
+                          name: ev.target.value,
+                        }))
+                      }
+                      inputProps={{ value: groupFormData.name }}
+                      label="Group Name"
                       variant="standard"
                       fullWidth
                     />
@@ -118,6 +162,7 @@ function Appraisal() {
                       }}
                     >
                       <Button
+                        onClick={handleSubmitGroupForm}
                         size="large"
                         variant="contained"
                         sx={{
@@ -139,68 +184,88 @@ function Appraisal() {
                     </div>
                   </Box>
                 </Modal>
+                <Modal
+                  open={itemModal.edit || itemModal.add}
+                  onClose={() => setItemModal({ add: false, edit: false })}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className={classes.modal}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                    >
+                      {itemModal.add
+                        ? "Add Evaluation Item"
+                        : "Edit Evaluation Item"}
+                    </Typography>
+                    <TextField
+                      onChange={(ev) =>
+                        setEvaluationItem((prev) => ({
+                          ...prev,
+                          name: ev.target.value,
+                        }))
+                      }
+                      inputProps={
+                        itemModal.edit
+                          ? {
+                              value: evaluationItem.name,
+                            }
+                          : {}
+                      }
+                      label="Evaluation Item"
+                      variant="standard"
+                      fullWidth
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: "2rem",
+                        margin: "2rem 0rem",
+                      }}
+                    >
+                      <Button
+                        onClick={() =>
+                          itemModal.add
+                            ? handleAddEvaluationItem()
+                            : handleEditEvaluationItem()
+                        }
+                        size="large"
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          fontWeight: 700,
+                          padding: "1rem 3rem",
+                        }}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        size="large"
+                        variant="outlined"
+                        onClick={() =>
+                          setItemModal({ add: false, edit: false })
+                        }
+                        sx={{ fontWeight: 700, padding: "1rem 3rem" }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </Box>
+                </Modal>
               </div>
             </div>
-            <Card
-              elevation={0}
-              sx={{
-                margin: "2rem 0",
-                backgroundColor: "#2fd5c8",
-                padding: "1rem",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                variant="body1"
-                sx={{ color: "white", fontWeight: 700 }}
-              >
-                Staff Evaluation/Appraisal Form
-              </Typography>
-              <div>
-                <Button
-                  sx={{
-                    backgroundColor: "white",
-                    padding: "1rem 2rem",
-                    fontWeight: 700,
-                  }}
-                  size="large"
-                >
-                  Add Item
-                </Button>
-                <IconButton>
-                  <DeleteForever sx={{ fontSize: "3rem", color: "white" }} />
-                </IconButton>
-
-                <IconButton
-                  variant="contained"
-                  id="fade-button"
-                  aria-controls={open ? "fade-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={handleClick}
-                >
-                  <KeyboardArrowDown
-                    sx={{ fontSize: "3rem", color: "white" }}
-                  />
-                </IconButton>
-                <Menu
-                  id="fade-menu"
-                  MenuListProps={{
-                    "aria-labelledby": "fade-button",
-                  }}
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  TransitionComponent={Fade}
-                >
-                  <MenuItem sx={{ width: "100%" }}>Profile</MenuItem>
-                  <MenuItem sx={{ width: "100%" }}>My account</MenuItem>
-                  <MenuItem sx={{ width: "100%" }}>Logout</MenuItem>
-                </Menu>
-              </div>
-            </Card>
+            {appraisalsData?.map((appraisal) => (
+              <EvaluationItem
+                key={appraisal.id}
+                handleItemModalOpen={handleItemModalOpen}
+                handleAddEvaluationItem={handleAddEvaluationItem}
+                appraisal={appraisal}
+                handleModalOpen={handleModalOpen}
+              />
+            ))}
           </Card>
         </Grid>
       </Container>
