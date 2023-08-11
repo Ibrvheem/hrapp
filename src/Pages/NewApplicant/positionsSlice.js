@@ -6,7 +6,6 @@ const initialState = {
   error: null,
 };
 const token = localStorage.getItem("token");
-console.log(token);
 export const getPositions = createAsyncThunk("position/get", async () => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/position`, {
     headers: {
@@ -16,16 +15,19 @@ export const getPositions = createAsyncThunk("position/get", async () => {
   const data = await response.json();
   return data;
 });
-export const createPosition = createAsyncThunk("position/create", async (name) => {
-  fetch(`${process.env.REACT_APP_API_URL}/position`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `bearer ${token}`,
-    },
-    body: JSON.stringify(name),
-  });
-});
+export const createPosition = createAsyncThunk(
+  "position/create",
+  async (name) => {
+    fetch(`${process.env.REACT_APP_API_URL}/position`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `bearer ${token}`,
+      },
+      body: JSON.stringify(name),
+    });
+  }
+);
 export const positionsSlice = createSlice({
   name: "positions",
   initialState,

@@ -1,11 +1,12 @@
-import { create } from "@mui/material/styles/createTransitions";
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const initialState = [];
+const initialState = {
+  user: {},
+};
 
 export const getUser = createAsyncThunk("auth/getUser", async (credentials) => {
-  const response = await fetch("https://api.hr.itcentral.ng/login", {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -31,29 +32,13 @@ export const authSlice = createSlice({
         console.log("loading");
       })
       .addCase(getUser.fulfilled, (state, action) => {
-        const user = action.payload;
+        state.user = action.payload;
         console.log("success");
       })
-
       .addCase(getUser.rejected, (state, action) => {
         const error = action.error.message;
-        console.log("wrong password");
+        console.log(error);
       });
   },
 });
 export default authSlice.reducer;
-// export const getUser = createAsyncThunk("auth/getUser", async (credentials) => {
-//   const response = await fetch("https://api.hr.itcentral.ng/login", {
-//     method: "POST",
-//     headers: {
-//       "Content-type": "application/json",
-//     },
-//     body: JSON.stringify(credentials),
-//   });
-//   const data = await response.json();
-//   if (response.ok) {
-//     return data;
-//   } else {
-//     throw new Error(data.error);
-//   }
-// });
