@@ -75,53 +75,59 @@ function Leaves() {
         {status === "loading" ? <LoadingScreen /> : null}
         <table className={classes.table} border={1}>
           <thead className={classes.tableHead}>
-            <th className={classes.td}>
-              <div>
-                <Button
-                  size="large"
-                  variant="contained"
-                  sx={{
-                    height: "5rem",
-                    width: "auto",
-                    color: "white",
-                    fontWeight: 700,
-                    fontSize: "1.4rem",
+            <tr>
+              <th className={classes.td}>
+                <div>
+                  <Button
+                    size="large"
+                    variant="contained"
+                    sx={{
+                      height: "5rem",
+                      width: "auto",
+                      color: "white",
+                      fontWeight: 700,
+                      fontSize: "1.4rem",
+                    }}
+                    onClick={handleModalOpen}
+                  >
+                    Submit Leave
+                  </Button>
+                  <SearchEmployeeModal
+                    handleModalClose={handleModalClose}
+                    modalOpen={modalOpen}
+                  />
+                </div>
+              </th>
+              <th className={classes.td}></th>
+              <th
+                className={classes.td}
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  width: "100%",
+                }}
+              >
+                <TextField
+                  onChange={handleSearch}
+                  fullWidth
+                  label="search"
+                  inputProps={{
+                    style: {
+                      height: "5rem",
+                      padding: "0 1rem",
+                    },
                   }}
-                  onClick={handleModalOpen}
-                >
-                  Submit Leave
-                </Button>
-                <SearchEmployeeModal
-                  handleModalClose={handleModalClose}
-                  modalOpen={modalOpen}
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <Search color="primary" />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
-              </div>
-            </th>
-            <th className={classes.td}></th>
-            <th
-              className={classes.td}
-              style={{ display: "flex", justifyContent: "end", width: "100%" }}
-            >
-              <TextField
-                onChange={handleSearch}
-                fullWidth
-                label="search"
-                inputProps={{
-                  style: {
-                    height: "5rem",
-                    padding: "0 1rem",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <Search color="primary" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </th>
+              </th>
+            </tr>
           </thead>
           <tbody>
             <tr>
@@ -150,7 +156,7 @@ function Leaves() {
                   new Date(row.leaves[0].start_date).getTime()) /
                 (1000 * 3600 * 24);
               return (
-                <tr>
+                <tr key={"staff-" + row.id}>
                   <td
                     className={classes.td}
                     style={{

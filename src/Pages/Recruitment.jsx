@@ -72,118 +72,129 @@ function Recruitment() {
         />
         <table className={classes.table} border={1}>
           <thead className={classes.tableHead}>
-            <td className={classes.td}>
-              <div>
-                <Button
-                  size="large"
-                  variant="contained"
-                  sx={{
-                    height: "5rem",
-                    width: "auto",
-                    color: "white",
-                    fontWeight: 700,
-                    fontSize: "1.4rem",
+            <tr>
+              <td className={classes.td}>
+                <div>
+                  <Button
+                    size="large"
+                    variant="contained"
+                    sx={{
+                      height: "5rem",
+                      width: "auto",
+                      color: "white",
+                      fontWeight: 700,
+                      fontSize: "1.4rem",
+                    }}
+                    onClick={handleModalOpen}
+                    startIcon={<Add />}
+                  >
+                    Add Job Position
+                  </Button>
+                  <PositionModal
+                    handleModalClose={handleModalClose}
+                    handleModalOpen={modalOpen}
+                  />
+                </div>
+              </td>
+              <td className={classes.td}></td>
+              <td
+                className={classes.td}
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  width: "100%",
+                }}
+              >
+                <TextField
+                  fullWidth
+                  label="search"
+                  inputProps={{
+                    style: {
+                      height: "5rem",
+                      padding: "0 1rem",
+                    },
                   }}
-                  onClick={handleModalOpen}
-                  startIcon={<Add />}
-                >
-                  Add Job Position
-                </Button>
-                <PositionModal
-                  handleModalClose={handleModalClose}
-                  handleModalOpen={modalOpen}
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <Search color="primary" />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
-              </div>
-            </td>
-            <td className={classes.td}></td>
-            <td
-              className={classes.td}
-              style={{ display: "flex", justifyContent: "end", width: "100%" }}
-            >
-              <TextField
-                fullWidth
-                label="search"
-                inputProps={{
-                  style: {
-                    height: "5rem",
-                    padding: "0 1rem",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <Search color="primary" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </td>
+              </td>
+            </tr>
           </thead>
-
-          <tr>
-            <th
-              className={classes.td}
-              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
-            >
-              Employee
-            </th>
-            <th
-              className={classes.td}
-              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
-            >
-              Contact
-            </th>
-            <th
-              className={classes.td}
-              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
-            >
-              Applied For
-            </th>
-          </tr>
-          {applicants?.map((row) => {
-            return (
-              <tr>
-                <td
-                  className={classes.td}
-                  style={{ display: "flex", alignItems: "center", gap: "2rem" }}
-                >
-                  {/* <img src="" alt="" className={classes.employeeImage} /> */}
-                  <div>
-                    <strong>
-                      {row.first_name} {row.last_name}
-                    </strong>
-                    <br /> Title: <strong>{row.title}</strong>
-                  </div>
-                </td>
-                <td className={classes.td}>
-                  <div
+          <tbody>
+            <tr>
+              <th
+                className={classes.td}
+                style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
+              >
+                Employee
+              </th>
+              <th
+                className={classes.td}
+                style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
+              >
+                Contact
+              </th>
+              <th
+                className={classes.td}
+                style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
+              >
+                Applied For
+              </th>
+            </tr>
+            {applicants?.map((row) => {
+              return (
+                <tr key={"applicant" + row.id}>
+                  <td
+                    className={classes.td}
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "1rem",
+                      gap: "2rem",
                     }}
                   >
-                    <Mail color="primary" /> {row.email}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1rem",
-                    }}
-                  >
-                    <Phone color="primary" />
-                    {row.phone}
-                  </div>
-                </td>
-                <td className={classes.td}>
-                  <div>{row.position?.name}</div>
-                  <div>{row.subtitle}</div>
-                </td>
-              </tr>
-            );
-          })}
+                    {/* <img src="" alt="" className={classes.employeeImage} /> */}
+                    <div>
+                      <strong>
+                        {row.first_name} {row.last_name}
+                      </strong>
+                      <br /> Title: <strong>{row.title}</strong>
+                    </div>
+                  </td>
+                  <td className={classes.td}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem",
+                      }}
+                    >
+                      <Mail color="primary" /> {row.email}
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem",
+                      }}
+                    >
+                      <Phone color="primary" />
+                      {row.phone}
+                    </div>
+                  </td>
+                  <td className={classes.td}>
+                    <div>{row.position?.name}</div>
+                    <div>{row.subtitle}</div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
       </Container>
     </div>

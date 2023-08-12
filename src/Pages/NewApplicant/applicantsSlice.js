@@ -25,7 +25,6 @@ export const getApplicants = createAsyncThunk("employees/get", async () => {
     },
   });
   const result = await data.json();
-  console.log(result);
   return result;
 });
 
@@ -62,7 +61,6 @@ export const applicantsSlice = createSlice({
     });
     builder.addCase(postApplicant.fulfilled, (state, action) => {
       state.status = "successful";
-      // state.employeeData.push(action.payload);
     });
     builder.addCase(postApplicant.pending, (state, action) => {
       state.status = "loading";
@@ -80,7 +78,6 @@ export const applicantsSlice = createSlice({
     });
     builder.addCase(postFile.rejected, (state, action) => {
       state.status = "failed";
-      console.log("rejected");
       console.log(action.error);
     });
   },
