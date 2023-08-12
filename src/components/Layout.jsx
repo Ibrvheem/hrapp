@@ -67,7 +67,7 @@ function Layout({ children, props }) {
             alignIten: "center",
           }}
         >
-          <Typography variant="body1" color="textSecondary" noWrap component="body1">
+          <Typography variant="body1" color="textSecondary" noWrap>
             Employees
           </Typography>
           <Avatar alt="User" src="/static/images/avatar/1.jpg" sx={{ border: "2px solid #2fd5c8" }} />
