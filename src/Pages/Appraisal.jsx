@@ -85,6 +85,7 @@ function Appraisal() {
         ? postAppraisal(groupFormData)
         : updateAppraisal(groupFormData)
     );
+    dispatch(getAppraisals());
     setModalOpen({ add: false, edit: false });
   };
 
@@ -102,6 +103,7 @@ function Appraisal() {
   const handleAddEvaluationItem = () => {
     setItemModal({ add: false, edit: false });
     dispatch(postEvaluationItem(evaluationItem));
+    dispatch(getAppraisals());
   };
   const handleEditEvaluationItem = () => {
     setItemModal({ add: false, edit: false });

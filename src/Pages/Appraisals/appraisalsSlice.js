@@ -14,6 +14,7 @@ export const getAppraisals = createAsyncThunk("appraisals/get", async () => {
     },
   });
   const data = await response.json();
+  console.log(data);
   if (response.ok) {
     return data;
   } else {
@@ -34,6 +35,7 @@ export const deleteAppraisal = createAsyncThunk(
       }
     );
     const result = await data.json();
+    if (data.ok) return { id };
     return result;
   }
 );
@@ -51,6 +53,7 @@ export const deleteEvaluationItem = createAsyncThunk(
       }
     );
     const result = await data.json();
+    if (data.ok) return { groupId, itemId };
     return result;
   }
 );
@@ -70,6 +73,7 @@ export const updateAppraisal = createAsyncThunk(
       }
     );
     const result = await data.json();
+    if (data.ok) return { id, name };
     return result;
   }
 );
@@ -89,6 +93,7 @@ export const updateEvaluationItem = createAsyncThunk(
       }
     );
     const result = await data.json();
+    if (data.ok) return { groupId, itemId: evaluationItemId, name };
     return result;
   }
 );
@@ -155,7 +160,7 @@ export const appraisalsSlice = createSlice({
       state.status = "failed";
       state.appraisalsData = action.payload;
     });
-    builder.addCase(postAppraisal.fulfilled, (state) => {
+    builder.addCase(postAppraisal.fulfilled, (state, action) => {
       state.status = "successful";
     });
     builder.addCase(postAppraisal.pending, (state) => {
@@ -166,7 +171,8 @@ export const appraisalsSlice = createSlice({
       state.status = "failed";
       state.error = action.error;
     });
-    builder.addCase(postEvaluationItem.fulfilled, (state) => {
+    builder.addCase(postEvaluationItem.fulfilled, (state, action) => {
+      console.log(action.payload);
       state.status = "successful";
     });
     builder.addCase(postEvaluationItem.pending, (state) => {
@@ -177,7 +183,10 @@ export const appraisalsSlice = createSlice({
       state.status = "failed";
       state.error = action.error;
     });
-    builder.addCase(deleteAppraisal.fulfilled, (state) => {
+    builder.addCase(deleteAppraisal.fulfilled, (state, action) => {
+      state.appraisalsData = state.appraisalsData.filter(
+        (appraisal) => appraisal.id !== action.payload.id
+      );
       state.status = "successful";
     });
     builder.addCase(deleteAppraisal.pending, (state) => {
@@ -199,8 +208,14 @@ export const appraisalsSlice = createSlice({
       state.status = "failed";
       state.error = action.error;
     });
-    builder.addCase(updateEvaluationItem.fulfilled, (state) => {
+    builder.addCase(updateEvaluationItem.fulfilled, (state, { payload }) => {
       state.status = "successful";
+      const appraisalToUpdate = state.appraisalsData.find(
+        (appraisal) => appraisal.id === payload.groupId
+      );
+      appraisalToUpdate.evaluationitems.find(
+        (item) => item.id === payload.itemId
+      ).name = payload.name;
     });
     builder.addCase(updateEvaluationItem.pending, (state) => {
       state.status = "loading";
@@ -210,8 +225,12 @@ export const appraisalsSlice = createSlice({
       state.status = "failed";
       state.error = action.error;
     });
-    builder.addCase(updateAppraisal.fulfilled, (state) => {
+    builder.addCase(updateAppraisal.fulfilled, (state, action) => {
       state.status = "successful";
+      const appraisalToUpdate = state.appraisalsData.find(
+        (appraisal) => appraisal.id === action.payload.id
+      );
+      appraisalToUpdate.name = action.payload.name;
     });
     builder.addCase(updateAppraisal.pending, (state) => {
       state.status = "loading";
