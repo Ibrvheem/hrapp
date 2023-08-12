@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { getEmployee } from "../AddEmployees/employeesSlice";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { getLeaves } from "./LeaveSlice";
 
 const useStyles = makeStyles(() => {
   return {
@@ -36,12 +37,9 @@ function SearchEmployeeModal({ modalOpen, handleModalClose }) {
   const onSubmit = (values) => {
     dispatch(getEmployee(values.string)).then((action) => {
       const employee = action.payload;
-      if (employee) {
-        handleChildModalOpen();
-      } else {
-        console.log(null);
-      }
+      if (employee) handleChildModalOpen();
     });
+    dispatch(getLeaves());
   };
   const formik = useFormik({
     initialValues: {
@@ -50,15 +48,25 @@ function SearchEmployeeModal({ modalOpen, handleModalClose }) {
     onSubmit,
   });
 
-  console.log(formik.values);
   return (
     <div>
-      <Modal open={modalOpen} onClose={handleModalClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal
+        open={modalOpen}
+        onClose={handleModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box className={classes.modal}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {/* Add Job Position */}
           </Typography>
-          <TextField label="Employee Phone or Email" variant="standard" fullWidth name="string" {...formik.getFieldProps("string")} />
+          <TextField
+            label="Employee Phone or Email"
+            variant="standard"
+            fullWidth
+            name="string"
+            {...formik.getFieldProps("string")}
+          />
           <div
             style={{
               display: "flex",
@@ -79,13 +87,21 @@ function SearchEmployeeModal({ modalOpen, handleModalClose }) {
             >
               Submit
             </Button>
-            <Button size="large" variant="outlined" onClick={handleModalClose} sx={{ fontWeight: 700, padding: "1rem 3rem" }}>
+            <Button
+              size="large"
+              variant="outlined"
+              onClick={handleModalClose}
+              sx={{ fontWeight: 700, padding: "1rem 3rem" }}
+            >
               Cancel
             </Button>
           </div>
         </Box>
       </Modal>
-      <EmployeeLeave handleChildModalClose={handleChildModalClose} childModalOpen={childModalOpen} />
+      <EmployeeLeave
+        handleChildModalClose={handleChildModalClose}
+        childModalOpen={childModalOpen}
+      />
     </div>
   );
 }

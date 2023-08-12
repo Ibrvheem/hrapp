@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { postLeave } from "./LeaveSlice";
 
-function LeaveInformation({ id }) {
+function LeaveInformation({ id, handleChildModalClose }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onSubmit = (values) => {
@@ -30,13 +30,17 @@ function LeaveInformation({ id }) {
     const formattedDateString = `${year}-${month}-${day}`;
     return formattedDateString;
   }
-  console.log(formik.values);
 
   return (
     <Grid container spacing={3}>
       <Grid item md={12}>
         <InputLabel>Reason:</InputLabel>
-        <TextField variant="outlined" fullWidth name="reason" {...formik.getFieldProps("reason")} />
+        <TextField
+          variant="outlined"
+          fullWidth
+          name="reason"
+          {...formik.getFieldProps("reason")}
+        />
       </Grid>
       <Grid item md={6}>
         <FormControl fullWidth>
@@ -86,9 +90,7 @@ function LeaveInformation({ id }) {
           variant="outlined"
           size="large"
           sx={{ padding: "1rem 4rem", fontWeight: 700, fontSize: "1.4rem" }}
-          onClick={() => {
-            navigate("/leaves");
-          }}
+          onClick={handleChildModalClose}
         >
           Cancel
         </Button>

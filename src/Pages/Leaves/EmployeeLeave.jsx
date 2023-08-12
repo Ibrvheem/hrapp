@@ -31,18 +31,21 @@ const useStyles = makeStyles(() => {
 function EmployeeLeave({ childModalOpen, handleChildModalClose }) {
   const classes = useStyles();
   const { getEmployee } = useSelector((state) => state.employees);
-  console.log(getEmployee);
 
-  console.log(getEmployee?.currentjob?.employee_id);
   return (
     <div>
-      <Modal open={childModalOpen} onClose={handleChildModalClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal
+        open={childModalOpen}
+        onClose={handleChildModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box className={classes.modal}>
           <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="h2" color="primary">
               Submit Employee Leave
             </Typography>
-            <IconButton>
+            <IconButton onClick={handleChildModalClose}>
               <Close sx={{ fontSize: "4rem" }} color="primary" />
             </IconButton>
           </Grid>
@@ -138,10 +141,17 @@ function EmployeeLeave({ childModalOpen, handleChildModalClose }) {
               </div>
             </Grid>
             <Grid item md={2}>
-              <img src={getEmployee.image} style={{ width: "100%", objectFit: "contain" }} alt="" />
+              <img
+                src={getEmployee.image}
+                style={{ width: "100%", objectFit: "contain" }}
+                alt=""
+              />
             </Grid>
           </Grid>
-          <LeaveInformation id={JSON.stringify(getEmployee?.currentjob?.employee_id)} />
+          <LeaveInformation
+            handleChildModalClose={handleChildModalClose}
+            id={JSON.stringify(getEmployee?.currentjob?.employee_id)}
+          />
         </Box>
       </Modal>
     </div>
