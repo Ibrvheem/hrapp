@@ -61,9 +61,12 @@ export const employeesSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(getEmployees.pending, (state, action) => {
+      state.status = "loading";
+    });
     builder.addCase(getEmployees.fulfilled, (state, action) => {
       state.employeeData = action.payload;
-      console.log("fulfilled");
+      state.status = "successful";
     });
     builder.addCase(getEmployee.fulfilled, (state, action) => {
       console.log("fulfiled");
@@ -80,9 +83,7 @@ export const employeesSlice = createSlice({
       state.status = "failed";
       state.error = action.error;
     });
-    builder.addCase(postFile.fulfilled, (state, action) => {
-      console.log("fulfilled");
-    });
+    builder.addCase(postFile.fulfilled, (state, action) => {});
     builder.addCase(postFile.rejected, (state, action) => {
       console.log("rejected");
       console.log(action.error);

@@ -47,8 +47,6 @@ export const deleteAward = createAsyncThunk("award/delete", async (id) => {
       authorization: `bearer ${token}`,
     },
   });
-  // const response = await data.json();
-  // return response
   return { id };
 });
 
@@ -111,7 +109,10 @@ export const awardsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getSessions.fulfilled, (state, action) => {
       state.sessions = action.payload;
-      console.log("fulfilled");
+      state.status = "successful";
+    });
+    builder.addCase(getSessions.pending, (state, action) => {
+      state.status = "loading";
     });
     builder.addCase(getSessions.rejected, (state, action) => {
       console.log(action.error);
@@ -120,7 +121,10 @@ export const awardsSlice = createSlice({
     });
     builder.addCase(getAwards.fulfilled, (state, action) => {
       state.awards = action.payload;
-      console.log("fulfilled");
+      state.status = "successful";
+    });
+    builder.addCase(getAwards.pending, (state, action) => {
+      state.status = "loading";
     });
     builder.addCase(getAwards.rejected, (state, action) => {
       console.log(action.error);
@@ -129,7 +133,10 @@ export const awardsSlice = createSlice({
     });
     builder.addCase(postAward.fulfilled, (state, action) => {
       state.awards.awards.push(action.payload);
-      console.log("fulfilled");
+      state.status = "successful";
+    });
+    builder.addCase(postAward.pending, (state, action) => {
+      state.status = "loading";
     });
     builder.addCase(postAward.rejected, (state, action) => {
       console.log(action.error);
@@ -140,7 +147,10 @@ export const awardsSlice = createSlice({
       state.awards.awards = state.awards.awards.filter(
         (award) => award.id !== action.payload.id
       );
-      console.log("fulfilled");
+      state.status = "successful";
+    });
+    builder.addCase(deleteAward.pending, (state, action) => {
+      state.status = "loading";
     });
     builder.addCase(deleteAward.rejected, (state, action) => {
       console.log(action.error);
@@ -152,7 +162,10 @@ export const awardsSlice = createSlice({
         (award) => award.id === action.payload.id
       );
       editedAward.employee = action.payload.employee;
-      console.log("fulfilled");
+      state.status = "successful";
+    });
+    builder.addCase(assignAward.pending, (state, action) => {
+      state.status = "loading";
     });
     builder.addCase(assignAward.rejected, (state, action) => {
       console.log(action.error);
@@ -166,7 +179,10 @@ export const awardsSlice = createSlice({
       editedAward.title = action.payload.title;
       editedAward.description = action.payload.description;
       editedAward.employee = action.payload.employee;
-      console.log("fulfilled");
+      state.status = "successful";
+    });
+    builder.addCase(editAward.pending, (state, action) => {
+      state.status = "loading";
     });
     builder.addCase(editAward.rejected, (state, action) => {
       console.log(action.error);

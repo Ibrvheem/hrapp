@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   user: {},
+  isLoading: false,
 };
 
 export const getUser = createAsyncThunk("auth/getUser", async (credentials) => {
@@ -29,10 +30,11 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
-        console.log("loading");
+        state.isLoading = true;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.isLoading = false;
         console.log("success");
       })
       .addCase(getUser.rejected, (state, action) => {

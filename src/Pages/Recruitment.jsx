@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import PositionModal from "./NewApplicant/PositionModal";
 import AddEmployee from "./AddEmployees/AddEmployee";
 import { getApplicants } from "./NewApplicant/applicantsSlice";
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from "../components/loadingScreen";
 const useStyles = makeStyles((theme) => {
   return {
     recruitement: {
@@ -45,23 +47,29 @@ const useStyles = makeStyles((theme) => {
 });
 function Recruitment() {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const dispatch = useDispatch();
-  const { applicantsData } = useSelector((state) => state.applicants);
+  const { applicantsData, status } = useSelector((state) => state.applicants);
   const applicants = applicantsData.applicants;
-  console.log(applicants);
-  console.log(applicantsData);
 
   useEffect(() => {
+    if (!token) return navigate("/");
     dispatch(getApplicants());
   }, []);
 
   return (
     <div className={classes.recruitement}>
+      {status === "loading" ? <LoadingScreen /> : null}
       <Container>
-        <SecondaryAppbar title="Employee" button="New Applicant" link="/recruitment/applicant" />
+        <SecondaryAppbar
+          title="Employee"
+          button="New Applicant"
+          link="/recruitment/applicant"
+        />
         <table className={classes.table} border={1}>
           <thead className={classes.tableHead}>
             <td className={classes.td}>
@@ -81,11 +89,17 @@ function Recruitment() {
                 >
                   Add Job Position
                 </Button>
-                <PositionModal handleModalClose={handleModalClose} handleModalOpen={modalOpen} />
+                <PositionModal
+                  handleModalClose={handleModalClose}
+                  handleModalOpen={modalOpen}
+                />
               </div>
             </td>
             <td className={classes.td}></td>
-            <td className={classes.td} style={{ display: "flex", justifyContent: "end", width: "100%" }}>
+            <td
+              className={classes.td}
+              style={{ display: "flex", justifyContent: "end", width: "100%" }}
+            >
               <TextField
                 fullWidth
                 label="search"
@@ -108,25 +122,37 @@ function Recruitment() {
           </thead>
 
           <tr>
-            <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
+            <th
+              className={classes.td}
+              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
+            >
               Employee
             </th>
-            <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
+            <th
+              className={classes.td}
+              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
+            >
               Contact
             </th>
-            <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
+            <th
+              className={classes.td}
+              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
+            >
               Applied For
             </th>
           </tr>
           {applicants?.map((row) => {
             return (
               <tr>
-                <td className={classes.td} style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-                  <img src="" alt="" className={classes.employeeImage} />
+                <td
+                  className={classes.td}
+                  style={{ display: "flex", alignItems: "center", gap: "2rem" }}
+                >
+                  {/* <img src="" alt="" className={classes.employeeImage} /> */}
                   <div>
                     <strong>
                       {row.first_name} {row.last_name}
-                    </strong>{" "}
+                    </strong>
                     <br /> Title: <strong>{row.title}</strong>
                   </div>
                 </td>

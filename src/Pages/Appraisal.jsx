@@ -19,6 +19,8 @@ import {
   updateEvaluationItem,
 } from "./Appraisals/appraisalsSlice";
 import EvaluationItem from "./Appraisals/evaluationItem";
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from "../components/loadingScreen";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -52,10 +54,12 @@ const useStyles = makeStyles((theme) => {
 });
 function Appraisal() {
   const classes = useStyles();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { appraisalsData } = useSelector((state) => state.appraisals);
-
+  const { appraisalsData, status } = useSelector((state) => state.appraisals);
+  const token = localStorage.getItem("token");
   useEffect(() => {
+    if (!token) return navigate("/");
     dispatch(getAppraisals());
   }, []);
 
@@ -107,6 +111,7 @@ function Appraisal() {
   return (
     <div className={classes.appraisal}>
       <Container>
+        {status === "loading" ? <LoadingScreen /> : null}
         <Grid container>
           <Card className={classes.card}>
             <div

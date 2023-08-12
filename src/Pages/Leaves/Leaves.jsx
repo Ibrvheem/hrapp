@@ -5,6 +5,8 @@ import { Mail, Phone, Search } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import SearchEmployeeModal from "./SearchEmployeeModal";
 import { getLeaves } from "./LeaveSlice";
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from "../../components/loadingScreen";
 const useStyles = makeStyles((theme) => {
   return {
     leaves: {
@@ -44,22 +46,26 @@ const useStyles = makeStyles((theme) => {
 });
 function Leaves() {
   const classes = useStyles();
+  const navigate = useNavigate();
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const dispatch = useDispatch();
-  const { leaveInformation } = useSelector((state) => state.leaves);
+  const { leaveInformation, status } = useSelector((state) => state.leaves);
 
   let staffOnLeave = leaveInformation.employees;
   console.log(staffOnLeave);
 
+  const token = localStorage.getItem("token");
   useEffect(() => {
+    if (!token) return navigate("/");
     dispatch(getLeaves());
   }, []);
 
   return (
     <div className={classes.leaves}>
       <Container>
+        {status === "loading" ? <LoadingScreen /> : null}
         <table className={classes.table} border={1}>
           <thead className={classes.tableHead}>
             <td className={classes.td}>
@@ -78,11 +84,17 @@ function Leaves() {
                 >
                   Submit Leave
                 </Button>
-                <SearchEmployeeModal handleModalClose={handleModalClose} modalOpen={modalOpen} />
+                <SearchEmployeeModal
+                  handleModalClose={handleModalClose}
+                  modalOpen={modalOpen}
+                />
               </div>
             </td>
             <td className={classes.td}></td>
-            <td className={classes.td} style={{ display: "flex", justifyContent: "end", width: "100%" }}>
+            <td
+              className={classes.td}
+              style={{ display: "flex", justifyContent: "end", width: "100%" }}
+            >
               <TextField
                 fullWidth
                 label="search"
@@ -105,21 +117,42 @@ function Leaves() {
           </thead>
 
           <tr>
-            <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
+            <th
+              className={classes.td}
+              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
+            >
               Employee
             </th>
-            <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
+            <th
+              className={classes.td}
+              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
+            >
               Contact
             </th>
-            <th className={classes.td} style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}>
+            <th
+              className={classes.td}
+              style={{ border: "1px solid #2fd5c8", padding: "2rem 0rem" }}
+            >
               Days Left
             </th>
           </tr>
           {staffOnLeave?.map((row) => {
             return (
               <tr>
-                <td className={classes.td} style={{ display: "flex", alignItems: "center", gap: "2rem", width: "100%" }}>
-                  <img src={row.image} alt="" className={classes.employeeImage} />
+                <td
+                  className={classes.td}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "2rem",
+                    width: "100%",
+                  }}
+                >
+                  <img
+                    src={row.image}
+                    alt=""
+                    className={classes.employeeImage}
+                  />
                   <div>
                     <strong>
                       {row.first_name} {row.middle_name} {row.last_name}

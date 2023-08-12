@@ -10,6 +10,9 @@ import {
   unSetReport,
   unSetReports,
 } from "./reports/reportsSlice";
+import { useNavigate } from "react-router-dom";
+import { getEmployees } from "./AddEmployees/employeesSlice";
+import LoadingScreen from "../components/loadingScreen";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -53,13 +56,20 @@ function Report() {
     "December",
   ];
   const classes = useStyles();
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const {
     employeeData: { employees },
+    status: employeeStatus,
   } = useSelector((state) => state.employees);
-  const { currentReport, reports } = useSelector((state) => state.reports);
+  const {
+    currentReport,
+    reports,
+    status: reportStatus,
+  } = useSelector((state) => state.reports);
 
-  const [activeEmployee, setActiveEmployee] = useState(null);
+  const [activeEmployee, setActiveEmployee] = useState({});
   const handleShowDetails = (employee) => {
     setActiveEmployee(employee);
   };
@@ -68,32 +78,33 @@ function Report() {
     dispatch(getReport(employee_id));
   };
 
-  const handlePrintAllReport = (employee_id) => {
-    dispatch(getAllReports(employee_id));
+  const handlePrintAllReport = () => {
+    dispatch(getAllReports());
   };
 
   useEffect(() => {
-    dispatch(getEmployeesFromLocalApi());
+    if (currentReport.url) window.location.href = currentReport.url;
+  }, [currentReport]);
+  useEffect(() => {
+    if (reports.url) window.location.href = reports.url;
+  }, [reports]);
+  useEffect(() => {
+    if (!token) return navigate("/");
+    dispatch(getEmployees());
   }, []);
-
-  if (currentReport.url) {
-    window.location.href = currentReport.url;
-    dispatch(unSetReport());
-  }
-  if (reports.url) {
-    window.location.href = reports.url;
-    dispatch(unSetReports());
-  }
 
   return (
     <div className={classes.report}>
       <Container>
+        {reportStatus === "loading" || employeeStatus === "loading" ? (
+          <LoadingScreen />
+        ) : null}
         <Grid container spacing={2}>
           <Grid item md={7}>
             <Card className={classes.card}>
               <div style={{ width: "100%" }}>
                 <Button
-                  onClick={handlePrintAllReport}
+                  onClick={() => handlePrintAllReport()}
                   variant="contained"
                   sx={{ color: "white", fontWeight: 700, fontSize: "1.4rem" }}
                   startIcon={<Print />}
@@ -128,7 +139,7 @@ function Report() {
               className={classes.card}
               sx={{ display: "grid", alignItems: "center" }}
             >
-              {activeEmployee ? (
+              {activeEmployee.id ? (
                 <Box>
                   <Typography fontWeight={700}>
                     {activeEmployee.first_name + " " + activeEmployee.last_name}

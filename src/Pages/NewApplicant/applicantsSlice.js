@@ -2,18 +2,22 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   applicantsData: [],
+  status: "idle",
 };
 const token = localStorage.getItem("token");
-export const postApplicant = createAsyncThunk("applicant/post", async (body) => {
-  const response = fetch(`${process.env.REACT_APP_API_URL}/applicant`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `bearer ${token}`,
-    },
-    body: JSON.stringify(body),
-  });
-});
+export const postApplicant = createAsyncThunk(
+  "applicant/post",
+  async (body) => {
+    const response = fetch(`${process.env.REACT_APP_API_URL}/applicant`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+  }
+);
 export const getApplicants = createAsyncThunk("employees/get", async () => {
   const data = await fetch(`${process.env.REACT_APP_API_URL}/applicants`, {
     headers: {
@@ -51,19 +55,31 @@ export const applicantsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getApplicants.fulfilled, (state, action) => {
       state.applicantsData = action.payload;
-      console.log("fulfilled");
+      state.status = "successful";
+    });
+    builder.addCase(getApplicants.pending, (state, action) => {
+      state.status = "loading";
     });
     builder.addCase(postApplicant.fulfilled, (state, action) => {
+      state.status = "successful";
       // state.employeeData.push(action.payload);
     });
+    builder.addCase(postApplicant.pending, (state, action) => {
+      state.status = "loading";
+    });
     builder.addCase(postApplicant.rejected, (state, action) => {
+      state.status = "failed";
       console.log(action.error);
     });
     builder.addCase(postFile.fulfilled, (state, action) => {
-      console.log("fulfilled");
+      state.status = "successful";
       state.resumeFile = action.payload;
     });
+    builder.addCase(postFile.pending, (state, action) => {
+      state.status = "loading";
+    });
     builder.addCase(postFile.rejected, (state, action) => {
+      state.status = "failed";
       console.log("rejected");
       console.log(action.error);
     });

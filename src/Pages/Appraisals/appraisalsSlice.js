@@ -145,11 +145,21 @@ export const appraisalsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAppraisals.fulfilled, (state, action) => {
       state.appraisalsData = action.payload;
-      console.log("fulfilled");
+      state.status = "successful";
+    });
+    builder.addCase(getAppraisals.pending, (state, action) => {
+      state.status = "loading";
+      state.appraisalsData = action.payload;
+    });
+    builder.addCase(getAppraisals.rejected, (state, action) => {
+      state.status = "failed";
+      state.appraisalsData = action.payload;
     });
     builder.addCase(postAppraisal.fulfilled, (state) => {
       state.status = "successful";
-      console.log("fulfilled");
+    });
+    builder.addCase(postAppraisal.pending, (state) => {
+      state.status = "loading";
     });
     builder.addCase(postAppraisal.rejected, (state, action) => {
       console.log(action.error);
@@ -158,7 +168,9 @@ export const appraisalsSlice = createSlice({
     });
     builder.addCase(postEvaluationItem.fulfilled, (state) => {
       state.status = "successful";
-      console.log("fulfilled");
+    });
+    builder.addCase(postEvaluationItem.pending, (state) => {
+      state.status = "loading";
     });
     builder.addCase(postEvaluationItem.rejected, (state, action) => {
       console.log(action.error);
@@ -167,7 +179,9 @@ export const appraisalsSlice = createSlice({
     });
     builder.addCase(deleteAppraisal.fulfilled, (state) => {
       state.status = "successful";
-      console.log("fulfilled");
+    });
+    builder.addCase(deleteAppraisal.pending, (state) => {
+      state.status = "loading";
     });
     builder.addCase(deleteAppraisal.rejected, (state, action) => {
       console.log(action.error);
@@ -176,7 +190,9 @@ export const appraisalsSlice = createSlice({
     });
     builder.addCase(deleteEvaluationItem.fulfilled, (state) => {
       state.status = "successful";
-      console.log("fulfilled");
+    });
+    builder.addCase(deleteEvaluationItem.pending, (state) => {
+      state.status = "loading";
     });
     builder.addCase(deleteEvaluationItem.rejected, (state, action) => {
       console.log(action.error);
@@ -185,7 +201,9 @@ export const appraisalsSlice = createSlice({
     });
     builder.addCase(updateEvaluationItem.fulfilled, (state) => {
       state.status = "successful";
-      console.log("fulfilled");
+    });
+    builder.addCase(updateEvaluationItem.pending, (state) => {
+      state.status = "loading";
     });
     builder.addCase(updateEvaluationItem.rejected, (state, action) => {
       console.log(action.error);
@@ -194,7 +212,9 @@ export const appraisalsSlice = createSlice({
     });
     builder.addCase(updateAppraisal.fulfilled, (state) => {
       state.status = "successful";
-      console.log("fulfilled");
+    });
+    builder.addCase(updateAppraisal.pending, (state) => {
+      state.status = "loading";
     });
     builder.addCase(updateAppraisal.rejected, (state, action) => {
       console.log(action.error);

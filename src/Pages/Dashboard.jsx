@@ -6,6 +6,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import SecondaryAppbar from "../components/SecondaryAppbar";
 import { useDispatch, useSelector } from "react-redux";
 import { getEmployees } from "./AddEmployees/employeesSlice";
+import LoadingScreen from "../components/loadingScreen";
 const useStyles = makeStyles(() => {
   return {
     dashboard: {
@@ -40,21 +41,28 @@ const useStyles = makeStyles(() => {
     },
   };
 });
+
 function Dashboard() {
-  const classes = useStyles();
   const navigate = useNavigate();
+  const classes = useStyles();
   const dispatch = useDispatch();
-  const { employeeData } = useSelector((state) => state.employees);
+  const { employeeData, status } = useSelector((state) => state.employees);
   const employees = employeeData.employees;
-  console.log(employees);
+  const token = localStorage.getItem("token");
   useEffect(() => {
-    dispatch(getEmployees());
+    if (!token) return navigate("/");
+    else dispatch(getEmployees());
   }, []);
-  
+
   return (
     <div className={classes.dashboard}>
       <Container>
-        <SecondaryAppbar title="Employee" button="Add Employee" link="/dashboard/addemployee" />
+        <SecondaryAppbar
+          title="Employee"
+          button="Add Employee"
+          link="/dashboard/addemployee"
+        />
+        {status === "loading" ? <LoadingScreen /> : null}
         <table className={classes.table} border={1}>
           <thead className={classes.tableHead}>
             <tr>
@@ -90,7 +98,7 @@ function Dashboard() {
                       gap: "2rem",
                     }}
                   >
-                    <img src="" alt="" className={classes.employeeImage} />
+                    {/* <img src="" alt="" className={classes.employeeImage} /> */}
                     <div>
                       <strong>
                         {employee?.first_name} {employee?.last_name}
@@ -127,7 +135,9 @@ function Dashboard() {
                   <td className={classes.td}>
                     <div>
                       {employee?.jobs.map((job) => {
-                        return <strong>{job.type.toUpperCase()}</strong>;
+                        return (
+                          <strong key={job.id}>{job.type.toUpperCase()}</strong>
+                        );
                       })}
                     </div>
                     <div>

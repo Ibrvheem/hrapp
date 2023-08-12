@@ -61,6 +61,7 @@ function Signin() {
   };
 
   const signInInputFieldStyles = {style: {fontSize: '1.5rem'}}
+  if (localStorage.getItem("token")) navigate("/dashboard");
 
   return (
     <div className={classes.signin}>

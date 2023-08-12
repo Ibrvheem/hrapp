@@ -29,6 +29,8 @@ import {
   postAward,
 } from "./awards/awardsSlice";
 import { getEmployees } from "./AddEmployees/employeesSlice";
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from "../components/loadingScreen";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -173,10 +175,13 @@ function Award({
 
 function Awards() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const classes = useStyles();
   const {
     awards: { awards },
     sessions,
+    status,
   } = useSelector((state) => state.awards);
   const {
     employeeData: { employees },
@@ -216,7 +221,6 @@ function Awards() {
 
   const handleAssignAwardModal = (award) => {
     setActiveAward((prev) => ({ ...prev, award }));
-    // handleCloseOptions();
     setOpenModal((prev) => ({ ...prev, assign: true }));
   };
   const handleCloseAssignModal = () => {
@@ -262,6 +266,7 @@ function Awards() {
   };
 
   useEffect(() => {
+    if (!token) return navigate("/");
     dispatch(getAwards());
     dispatch(getSessions());
     dispatch(getEmployees());
@@ -274,6 +279,7 @@ function Awards() {
   return (
     <div className={classes.awards}>
       <Container>
+        {status === "loading" ? <LoadingScreen /> : null}
         <Grid container spacing={2} sx={{ paddingBlockStart: "2rem" }}>
           <Grid item md={9}>
             <div
