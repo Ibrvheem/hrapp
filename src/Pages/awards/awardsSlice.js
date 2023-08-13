@@ -7,7 +7,7 @@ const initialState = {
   error: null,
 };
 
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 export const getSessions = createAsyncThunk("sessions/get", async () => {
   const data = await fetch(`${process.env.REACT_APP_API_URL}/sessions`, {
     headers: {

@@ -1,11 +1,14 @@
-import { AppBar, Avatar, Box, Container, CssBaseline, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material";
+import { AppBar, Menu, MenuItem, Avatar, Box, Container, CssBaseline, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { AdsClick, EmojiEvents, Home, LibraryBooks, PersonAdd, Timer } from "@mui/icons-material";
 import { useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { useDispatch } from 'react-redux'
 import { Outlet } from "react-router-dom";
+import { logOut } from "../Pages/Auth/authSlice";
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => {
   return {};
@@ -46,6 +49,18 @@ function Layout({ children, props }) {
       icon: <AdsClick />,
     },
   ];
+  const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+
+  const handleOpenOptions = (ev, employee) => {
+    setAnchorEl(ev.currentTarget);
+  };
+  const handleCloseOptions = () => {
+    setAnchorEl(null);
+  };
+  const handleLogout = () => {
+    dispatch(logOut())
+  };
   const navigate = useNavigate();
   const location = useLocation();
   return (
@@ -70,7 +85,18 @@ function Layout({ children, props }) {
           <Typography variant="body1" color="textSecondary" noWrap>
             Employees
           </Typography>
-          <Avatar alt="User" src="/static/images/avatar/1.jpg" sx={{ border: "2px solid #2fd5c8" }} />
+          <Avatar onClick={handleOpenOptions} alt="User" src="/static/images/avatar/1.jpg" sx={{ border: "2px solid #2fd5c8" }} />
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleCloseOptions}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
       <Drawer

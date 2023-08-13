@@ -176,7 +176,6 @@ function Award({
 function Awards() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
   const classes = useStyles();
   const {
     awards: { awards },
@@ -266,7 +265,6 @@ function Awards() {
   };
 
   useEffect(() => {
-    if (!token) return navigate("/");
     dispatch(getAwards());
     dispatch(getSessions());
     dispatch(getEmployees());

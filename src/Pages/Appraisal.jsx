@@ -57,9 +57,7 @@ function Appraisal() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { appraisalsData, status } = useSelector((state) => state.appraisals);
-  const token = localStorage.getItem("token");
   useEffect(() => {
-    if (!token) return navigate("/");
     dispatch(getAppraisals());
   }, []);
 

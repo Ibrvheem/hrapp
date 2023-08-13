@@ -1,7 +1,7 @@
 import { Add, ErrorOutline, Mail, MoreVert, Phone } from "@mui/icons-material";
 import { Box, Button, Container, IconButton, Menu, MenuItem, Modal, Paper, Typography } from "@mui/material";
 import { makeStyles, styled } from "@mui/styles";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SecondaryAppbar from "../components/SecondaryAppbar";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,7 +65,6 @@ function Dashboard() {
   const { employeeData: { employees }, status } = useSelector((state) => state.employees);
   // change sessions to employee slice
   const { sessions } = useSelector((state) => state.awards);
-  const token = localStorage.getItem("token");
   const [activeEmployee, setActiveEmployee] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -96,10 +95,9 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    if (!token) return navigate("/");
     dispatch(getEmployees());
     dispatch(getAppraisals());
-  }, []);
+  }, [])
 
   return (
     <div className={classes.dashboard}>

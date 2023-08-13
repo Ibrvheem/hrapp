@@ -13,6 +13,7 @@ import Signin from "./Pages/Auth/Signin";
 import NewApplicant from "./Pages/NewApplicant/NewApplicant";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import RequireAuth from "./Pages/Auth/requireAuth";
 const theme = createTheme({
   palette: {
     primary: {
@@ -53,14 +54,23 @@ function App({ children }) {
       <>
         <Route index element={<Signin />}></Route>
         <Route path="/" element={<Layout />}>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
-          <Route path="/dashboard/addemployee" element={<AddEmployee />}></Route>
-          <Route path="/recruitment" element={<Recruitment />}></Route>
-          <Route path="/recruitment/applicant" element={<NewApplicant />}></Route>
-          <Route path="/leaves" element={<Leaves />}></Route>
-          <Route path="/appraisal" element={<Appraisal />}></Route>
-          <Route path="/awards" element={<Awards />}></Route>
-          <Route path="/report" element={<Report />}></Route>
+          <Route
+            path="/dashboard"
+            element={<RequireAuth><Dashboard /></RequireAuth>}
+          ></Route>
+          <Route
+            path="/dashboard/addemployee"
+            element={<RequireAuth><AddEmployee /></RequireAuth>}
+          ></Route>
+          <Route path="/recruitment" element={<RequireAuth><Recruitment /></RequireAuth>}></Route>
+          <Route
+            path="/recruitment/applicant"
+            element={<RequireAuth><NewApplicant /></RequireAuth>}
+          ></Route>
+          <Route path="/leaves" element={<RequireAuth><Leaves /></RequireAuth>}></Route>
+          <Route path="/appraisal" element={<RequireAuth><Appraisal /></RequireAuth>}></Route>
+          <Route path="/awards" element={<RequireAuth><Awards /></RequireAuth>}></Route>
+          <Route path="/report" element={<RequireAuth><Report /></RequireAuth>}></Route>
         </Route>
       </>
     )

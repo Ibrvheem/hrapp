@@ -5,7 +5,7 @@ const initialState = {
   status: "idle",
   error: null,
 };
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 export const getPositions = createAsyncThunk("position/get", async () => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/position`, {
     headers: {

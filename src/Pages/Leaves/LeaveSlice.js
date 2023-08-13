@@ -5,7 +5,7 @@ const initialState = {
   status: "idle",
 };
 
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 export const postLeave = createAsyncThunk(
   "leave/post",
   async ({ id, body }) => {

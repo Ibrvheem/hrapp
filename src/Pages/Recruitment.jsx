@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => {
 function Recruitment() {
   const classes = useStyles();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
@@ -57,7 +56,6 @@ function Recruitment() {
   const applicants = applicantsData.applicants;
 
   useEffect(() => {
-    if (!token) return navigate("/");
     dispatch(getApplicants());
   }, []);
 

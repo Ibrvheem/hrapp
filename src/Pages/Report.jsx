@@ -57,7 +57,6 @@ function Report() {
   ];
   const classes = useStyles();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const {
     employeeData: { employees },
@@ -89,7 +88,6 @@ function Report() {
     if (reports.url) window.location.href = reports.url;
   }, [reports]);
   useEffect(() => {
-    if (!token) return navigate("/");
     dispatch(getEmployees());
   }, []);
 

@@ -63,7 +63,7 @@ function Leaves() {
       )
     );
   };
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   useEffect(() => {
     if (!token) return navigate("/");
     dispatch(getLeaves());

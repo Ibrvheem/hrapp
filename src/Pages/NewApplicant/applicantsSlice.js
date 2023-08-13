@@ -4,7 +4,7 @@ const initialState = {
   applicantsData: [],
   status: "idle",
 };
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 export const postApplicant = createAsyncThunk(
   "applicant/post",
   async (body) => {
