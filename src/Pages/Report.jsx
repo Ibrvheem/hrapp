@@ -74,19 +74,19 @@ function Report() {
   };
 
   const handlePrintReport = (employee_id) => {
-    dispatch(getReport(employee_id));
+    dispatch(getReport(employee_id)).then(() =>
+      dispatch(unSetReport()))
   };
 
   const handlePrintAllReport = () => {
-    dispatch(getAllReports());
+    dispatch(getAllReports()).then(() =>
+      dispatch(unSetReport()))
   };
 
   useEffect(() => {
-    if (currentReport.url) window.location.href = currentReport.url;
-  }, [currentReport]);
-  useEffect(() => {
-    if (reports.url) window.location.href = reports.url;
-  }, [reports]);
+    if (currentReport?.url) window.location.href = currentReport.url;
+    if (reports?.url) window.location.href = reports.url;
+  }, [reports, currentReport]);
   useEffect(() => {
     dispatch(getEmployees());
   }, []);
@@ -114,6 +114,7 @@ function Report() {
                 {employees?.length ? (
                   employees?.map((employee) => (
                     <Box
+                      sx={{ cursor: 'pointer' }}
                       onClick={() => handleShowDetails(employee)}
                       key={"employee-" + employee.id}
                       className={classes.employee}

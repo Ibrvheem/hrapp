@@ -110,6 +110,7 @@ function Award({
   };
   return (
     <Box
+      sx={{ cursor: 'pointer' }}
       onClick={() => handleShowDetails(award)}
       key={award.title}
       className={classes.award}

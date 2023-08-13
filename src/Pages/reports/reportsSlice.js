@@ -33,6 +33,10 @@ export const getAllReports = createAsyncThunk("reports/get", async () => {
   return result;
 });
 
+export const unSetReport = createAsyncThunk("reports/unset", async () => {
+  return true
+})
+
 export const reportsSlice = createSlice({
   name: "reports",
   initialState,
@@ -61,6 +65,11 @@ export const reportsSlice = createSlice({
       console.log(action.error);
       state.status = "failed";
       state.error = action.error;
+    });
+    builder.addCase(unSetReport.fulfilled, (state, action) => {
+      state.currentReport = null
+      state.reports = null
+      state.status = "successful";
     });
   },
 });
