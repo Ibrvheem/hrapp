@@ -14,7 +14,6 @@ export const getAppraisals = createAsyncThunk("appraisals/get", async () => {
     },
   });
   const data = await response.json();
-  console.log(data);
   if (response.ok) {
     return data;
   } else {
@@ -143,6 +142,23 @@ export const postEvaluationItem = createAsyncThunk(
   }
 );
 
+export const putAppraisal = createAsyncThunk("appraisal/put", async (body) => {
+  const data = await fetch(
+    `${process.env.REACT_APP_API_URL}/employee/${body.employeeId}/appraisal`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `bearer ${token}`,
+      },
+      body: JSON.stringify(body.appraisal),
+    }
+  );
+  const result = await data.json();
+  // if (data.ok) return { appraisal: body.apppraisal };
+  return result;
+});
+
 export const appraisalsSlice = createSlice({
   name: "appraisal",
   initialState,
@@ -172,7 +188,6 @@ export const appraisalsSlice = createSlice({
       state.error = action.error;
     });
     builder.addCase(postEvaluationItem.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.status = "successful";
     });
     builder.addCase(postEvaluationItem.pending, (state) => {
@@ -236,6 +251,17 @@ export const appraisalsSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(updateAppraisal.rejected, (state, action) => {
+      console.log(action.error);
+      state.status = "failed";
+      state.error = action.error;
+    });
+    builder.addCase(putAppraisal.fulfilled, (state, action) => {
+      state.status = "successful";
+    });
+    builder.addCase(putAppraisal.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(putAppraisal.rejected, (state, action) => {
       console.log(action.error);
       state.status = "failed";
       state.error = action.error;
