@@ -42,6 +42,22 @@ export const getEmployee = createAsyncThunk("employee/get", async (id) => {
   const data = await response.json();
   return data;
 });
+export const deleteEmployee = createAsyncThunk(
+  "employee/delete",
+  async (id) => {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/employee/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: `bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    return data;
+  }
+);
 export const putMinutesLost = createAsyncThunk(
   "minutes/put",
   async ({ id, formData }) => {
@@ -114,6 +130,17 @@ export const employeesSlice = createSlice({
       state.status = "successful";
     });
     builder.addCase(postEmployees.rejected, (state, action) => {
+      console.log(action.error);
+      state.status = "failed";
+      state.error = action.error;
+    });
+    builder.addCase(deleteEmployee.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteEmployee.fulfilled, (state, action) => {
+      state.status = "successful";
+    });
+    builder.addCase(deleteEmployee.rejected, (state, action) => {
       console.log(action.error);
       state.status = "failed";
       state.error = action.error;

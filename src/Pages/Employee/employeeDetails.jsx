@@ -80,7 +80,7 @@ const useStyles = makeStyles(() => {
   };
 });
 
-export default function EmployeeDetails({ sessions, activeEmployee, setActiveEmployee }) {
+export default function EmployeeDetails({ sessions, activeEmployee, setActiveEmployee, handleCloseDetails }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { employeeData: { employees } } = useSelector((state) => state.employees);
@@ -128,7 +128,8 @@ export default function EmployeeDetails({ sessions, activeEmployee, setActiveEmp
     )
   };
   const handleChecked = (value, appraisalId, itemId) => {
-    const itemPoints = activeEmployee.appraisals.find((ap) => ap.appraisalgroup.id === appraisalId && ap.evaluationitem.id === itemId)?.evaluation_point
+    const itemPoints = activeEmployee.appraisals.find((ap) =>
+      ap.appraisalgroup.id === appraisalId && ap.evaluationitem.id === itemId)?.evaluation_point
     if (itemPoints) return value === itemPoints
     return value === 0
   }
@@ -219,7 +220,7 @@ export default function EmployeeDetails({ sessions, activeEmployee, setActiveEmp
       </Modal>
       <Box>
         <Button
-          onClick={() => setActiveEmployee({})}
+          onClick={handleCloseDetails}
           variant="text"
           className={classes.button}
           sx={{ paddingInlineStart: 0 }}
