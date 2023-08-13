@@ -6,8 +6,8 @@ const initialState = {
   status: "idle",
   error: null,
 };
-const token = sessionStorage.getItem("token");
 export const getEmployees = createAsyncThunk("employees/get", async () => {
+  const token = sessionStorage.getItem("token");
   const data = await fetch(`${process.env.REACT_APP_API_URL}/employee`, {
     headers: {
       authorization: `bearer ${token}`,
@@ -20,6 +20,7 @@ export const getEmployees = createAsyncThunk("employees/get", async () => {
 export const postEmployees = createAsyncThunk(
   "employees/post",
   async (body) => {
+    const token = sessionStorage.getItem("token");
     const response = fetch(`${process.env.REACT_APP_API_URL}/employee`, {
       method: "POST",
       headers: {
@@ -31,6 +32,7 @@ export const postEmployees = createAsyncThunk(
   }
 );
 export const getEmployee = createAsyncThunk("employee/get", async (id) => {
+  const token = sessionStorage.getItem("token");
   const response = await fetch(
     `${process.env.REACT_APP_API_URL}/employee/search?query=${id}`,
     {
@@ -45,6 +47,7 @@ export const getEmployee = createAsyncThunk("employee/get", async (id) => {
 export const deleteEmployee = createAsyncThunk(
   "employee/delete",
   async (id) => {
+    const token = sessionStorage.getItem("token");
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/employee/${id}`,
       {
@@ -61,6 +64,7 @@ export const deleteEmployee = createAsyncThunk(
 export const putMinutesLost = createAsyncThunk(
   "minutes/put",
   async ({ id, formData }) => {
+    const token = sessionStorage.getItem("token");
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/employee/${id}/minutes-lost`,
       {
@@ -78,6 +82,7 @@ export const putMinutesLost = createAsyncThunk(
 );
 
 export const postFile = createAsyncThunk("resume/post", async (file) => {
+  const token = sessionStorage.getItem("token");
   const resume = new FormData();
   resume.append("file", file);
   console.log("triggered");

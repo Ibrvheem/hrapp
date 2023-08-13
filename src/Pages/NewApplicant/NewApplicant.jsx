@@ -171,7 +171,7 @@ function Recruitment() {
               size="large"
               sx={{ padding: "1rem 4rem", fontWeight: 700, fontSize: "1.4rem" }}
               onClick={() => {
-                navigate("/");
+                navigate("/recruitment");
               }}
             >
               Cancel

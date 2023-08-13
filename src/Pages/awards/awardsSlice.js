@@ -7,8 +7,8 @@ const initialState = {
   error: null,
 };
 
-const token = sessionStorage.getItem("token");
 export const getSessions = createAsyncThunk("sessions/get", async () => {
+  const token = sessionStorage.getItem("token");
   const data = await fetch(`${process.env.REACT_APP_API_URL}/sessions`, {
     headers: {
       authorization: `bearer ${token}`,
@@ -18,6 +18,7 @@ export const getSessions = createAsyncThunk("sessions/get", async () => {
   return result;
 });
 export const getAwards = createAsyncThunk("awards/get", async () => {
+  const token = sessionStorage.getItem("token");
   const data = await fetch(`${process.env.REACT_APP_API_URL}/awards`, {
     headers: {
       authorization: `bearer ${token}`,
@@ -28,6 +29,7 @@ export const getAwards = createAsyncThunk("awards/get", async () => {
 });
 
 export const postAward = createAsyncThunk("award/post", async (body) => {
+  const token = sessionStorage.getItem("token");
   const data = await fetch(`${process.env.REACT_APP_API_URL}/award`, {
     method: "POST",
     headers: {
@@ -41,6 +43,7 @@ export const postAward = createAsyncThunk("award/post", async (body) => {
 });
 
 export const deleteAward = createAsyncThunk("award/delete", async (id) => {
+  const token = sessionStorage.getItem("token");
   const data = await fetch(`${process.env.REACT_APP_API_URL}/award/${id}`, {
     method: "DELETE",
     headers: {
@@ -53,6 +56,7 @@ export const deleteAward = createAsyncThunk("award/delete", async (id) => {
 export const assignAward = createAsyncThunk(
   "award/assign",
   async ({ award, session, term, employee_id }) => {
+    const token = sessionStorage.getItem("token");
     const body = {
       employee_id: employee_id,
       description: award.description,
@@ -79,6 +83,7 @@ export const assignAward = createAsyncThunk(
 export const editAward = createAsyncThunk(
   "award/edit",
   async ({ award, session, term }) => {
+    const token = sessionStorage.getItem("token");
     const body = {
       employee_id: award.employee?.id || null,
       description: award.description,

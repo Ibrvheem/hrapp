@@ -6,8 +6,8 @@ const initialState = {
   error: null,
 };
 
-const token = sessionStorage.getItem("token");
 export const getAppraisals = createAsyncThunk("appraisals/get", async () => {
+  const token = sessionStorage.getItem("token");
   const response = await fetch(`${process.env.REACT_APP_API_URL}/appraisals`, {
     headers: {
       authorization: `bearer ${token}`,
@@ -24,6 +24,7 @@ export const getAppraisals = createAsyncThunk("appraisals/get", async () => {
 export const deleteAppraisal = createAsyncThunk(
   "appraisal/delete",
   async (id) => {
+    const token = sessionStorage.getItem("token");
     const data = await fetch(
       `${process.env.REACT_APP_API_URL}/appraisal/${id}`,
       {
@@ -42,6 +43,7 @@ export const deleteAppraisal = createAsyncThunk(
 export const deleteEvaluationItem = createAsyncThunk(
   "appraisal/item/delete",
   async ({ groupId, itemId }) => {
+    const token = sessionStorage.getItem("token");
     const data = await fetch(
       `${process.env.REACT_APP_API_URL}/appraisal/${groupId}/evaluation/${itemId}`,
       {
@@ -60,6 +62,7 @@ export const deleteEvaluationItem = createAsyncThunk(
 export const updateAppraisal = createAsyncThunk(
   "appraisal/update",
   async ({ id, name }) => {
+    const token = sessionStorage.getItem("token");
     const data = await fetch(
       `${process.env.REACT_APP_API_URL}/appraisal/${id}`,
       {
@@ -80,6 +83,7 @@ export const updateAppraisal = createAsyncThunk(
 export const updateEvaluationItem = createAsyncThunk(
   "appraisal/item/update",
   async ({ groupId, evaluationItemId, name }) => {
+    const token = sessionStorage.getItem("token");
     const data = await fetch(
       `${process.env.REACT_APP_API_URL}/appraisal/${groupId}/evaluation/${evaluationItemId}`,
       {
@@ -100,6 +104,7 @@ export const updateEvaluationItem = createAsyncThunk(
 export const postAppraisal = createAsyncThunk(
   "appraisal/post",
   async (body) => {
+    const token = sessionStorage.getItem("token");
     const response = await fetch(`${process.env.REACT_APP_API_URL}/appraisal`, {
       method: "POST",
       headers: {
@@ -120,6 +125,7 @@ export const postAppraisal = createAsyncThunk(
 export const postEvaluationItem = createAsyncThunk(
   "appraisal/item/post",
   async (body) => {
+    const token = sessionStorage.getItem("token");
     if (body.name !== "" && body.groupId) {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/appraisal/${body.groupId}/evaluation`,
@@ -143,6 +149,7 @@ export const postEvaluationItem = createAsyncThunk(
 );
 
 export const putAppraisal = createAsyncThunk("appraisal/put", async (body) => {
+  const token = sessionStorage.getItem("token");
   const data = await fetch(
     `${process.env.REACT_APP_API_URL}/employee/${body.employeeId}/appraisal`,
     {

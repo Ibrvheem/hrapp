@@ -8,8 +8,8 @@ const initialState = {
   error: null,
 };
 
-const token = sessionStorage.getItem("token");
 export const getReport = createAsyncThunk("report/get", async (employee_id) => {
+  const token = sessionStorage.getItem("token");
   const data = await fetch(
     `${process.env.REACT_APP_API_URL}/report/${employee_id}`,
     {
@@ -23,6 +23,7 @@ export const getReport = createAsyncThunk("report/get", async (employee_id) => {
 });
 
 export const getAllReports = createAsyncThunk("reports/get", async () => {
+  const token = sessionStorage.getItem("token");
   const data = await fetch(`${process.env.REACT_APP_API_URL}/report`, {
     headers: {
       authorization: `bearer ${token}`,

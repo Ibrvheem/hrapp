@@ -5,10 +5,10 @@ const initialState = {
   status: "idle",
 };
 
-const token = sessionStorage.getItem("token");
 export const postLeave = createAsyncThunk(
   "leave/post",
   async ({ id, body }) => {
+    const token = sessionStorage.getItem("token");
     const employeeId = JSON.stringify(id);
     console.log(body);
     console.log(employeeId);
@@ -28,6 +28,7 @@ export const postLeave = createAsyncThunk(
 );
 
 export const getLeaves = createAsyncThunk("get/leave", async () => {
+  const token = sessionStorage.getItem("token");
   const response = await fetch(
     `${process.env.REACT_APP_API_URL}/employee/leave`,
     {

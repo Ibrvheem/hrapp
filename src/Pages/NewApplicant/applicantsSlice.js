@@ -4,10 +4,10 @@ const initialState = {
   applicantsData: [],
   status: "idle",
 };
-const token = sessionStorage.getItem("token");
 export const postApplicant = createAsyncThunk(
   "applicant/post",
   async (body) => {
+    const token = sessionStorage.getItem("token");
     const response = fetch(`${process.env.REACT_APP_API_URL}/applicant`, {
       method: "POST",
       headers: {
@@ -19,6 +19,7 @@ export const postApplicant = createAsyncThunk(
   }
 );
 export const getApplicants = createAsyncThunk("employees/get", async () => {
+  const token = sessionStorage.getItem("token");
   const data = await fetch(`${process.env.REACT_APP_API_URL}/applicants`, {
     headers: {
       authorization: `bearer ${token}`,
@@ -29,6 +30,7 @@ export const getApplicants = createAsyncThunk("employees/get", async () => {
 });
 
 export const postFile = createAsyncThunk("resume/post", async (file) => {
+  const token = sessionStorage.getItem("token");
   const resume = new FormData();
   resume.append("file", file);
   console.log("triggered");

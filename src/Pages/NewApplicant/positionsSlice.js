@@ -5,8 +5,8 @@ const initialState = {
   status: "idle",
   error: null,
 };
-const token = sessionStorage.getItem("token");
 export const getPositions = createAsyncThunk("position/get", async () => {
+  const token = sessionStorage.getItem("token");
   const response = await fetch(`${process.env.REACT_APP_API_URL}/position`, {
     headers: {
       authorization: `bearer ${token}`,
@@ -18,6 +18,7 @@ export const getPositions = createAsyncThunk("position/get", async () => {
 export const createPosition = createAsyncThunk(
   "position/create",
   async (name) => {
+    const token = sessionStorage.getItem("token");
     fetch(`${process.env.REACT_APP_API_URL}/position`, {
       method: "POST",
       headers: {
