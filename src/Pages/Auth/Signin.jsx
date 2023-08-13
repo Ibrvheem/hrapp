@@ -78,7 +78,7 @@ function Signin({ setToken }) {
         }}
       >
         <div>
-          <img src="logo512.png" alt="" height={90} />
+          <img src="logo.png" alt="" height={90} />
         </div>
         <div>
           <Typography variant="h4" component="h1" sx={{fontWeight: 700, marginBlockEnd: '3rem'}} >Welcome</Typography>
