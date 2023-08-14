@@ -1,11 +1,9 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React, { useEffect } from "react";
-import EmployeeLeave from "./EmployeeLeave";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { getEmployee } from "../Employee/employeesSlice";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
 import { getLeaves } from "./LeaveSlice";
 
 const useStyles = makeStyles(() => {
@@ -16,23 +14,19 @@ const useStyles = makeStyles(() => {
       left: "50%",
       transform: "translate(-50%, -50%)",
       width: "40rem",
-      height: "20rem",
+      minHeight: "20rem",
       backgroundColor: "white",
       boxShadow: 24,
       display: "flex",
       justifyContent: "space-between",
       flexDirection: "column",
-      borderRadius: "2rem",
-      padding: "1rem 2rem",
+      gap: "1.5rem",
+      padding: "2rem",
     },
   };
 });
-function SearchEmployeeModal({ modalOpen, handleModalClose }) {
+function SearchEmployeeModal({ modalOpen, handleModalClose, handleChildModalOpen }) {
   const classes = useStyles();
-  const navigate = useNavigate();
-  const [childModalOpen, setChildModalOpen] = React.useState(false);
-  const handleChildModalClose = () => setChildModalOpen(false);
-  const handleChildModalOpen = () => setChildModalOpen(true);
   const dispatch = useDispatch();
   const onSubmit = (values) => {
     dispatch(getEmployee(values.string)).then((action) => {
@@ -48,6 +42,11 @@ function SearchEmployeeModal({ modalOpen, handleModalClose }) {
     onSubmit,
   });
 
+  const handleSubmit = () => {
+    formik.handleSubmit()
+    handleModalClose()
+  }
+
   return (
     <div>
       <Modal
@@ -58,7 +57,7 @@ function SearchEmployeeModal({ modalOpen, handleModalClose }) {
       >
         <Box className={classes.modal}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {/* Add Job Position */}
+            Search Employee
           </Typography>
           <TextField
             label="Employee Phone or Email"
@@ -83,7 +82,7 @@ function SearchEmployeeModal({ modalOpen, handleModalClose }) {
                 fontWeight: 700,
                 padding: "1rem 3rem",
               }}
-              onClick={formik.handleSubmit}
+              onClick={handleSubmit}
             >
               Submit
             </Button>
@@ -98,10 +97,6 @@ function SearchEmployeeModal({ modalOpen, handleModalClose }) {
           </div>
         </Box>
       </Modal>
-      <EmployeeLeave
-        handleChildModalClose={handleChildModalClose}
-        childModalOpen={childModalOpen}
-      />
     </div>
   );
 }

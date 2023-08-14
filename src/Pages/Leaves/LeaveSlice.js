@@ -9,11 +9,7 @@ export const postLeave = createAsyncThunk(
   "leave/post",
   async ({ id, body }) => {
     const token = sessionStorage.getItem("token");
-    const employeeId = JSON.stringify(id);
-    console.log(body);
-    console.log(employeeId);
-    console.log(`${process.env.REACT_APP_API_URL}/employee/${id}/set-on-leave`);
-    await fetch(
+    const response = await fetch(
       `${process.env.REACT_APP_API_URL}/employee/${id}/set-on-leave`,
       {
         method: "POST",
@@ -24,6 +20,7 @@ export const postLeave = createAsyncThunk(
         body: JSON.stringify(body),
       }
     );
+    return await response.json()
   }
 );
 
@@ -53,6 +50,7 @@ export const LeaveSlice = createSlice({
     });
     builder.addCase(postLeave.rejected, (state, action) => {
       state.status = "failed";
+      console.log(action.error);
     });
     builder.addCase(getLeaves.fulfilled, (state, action) => {
       state.leaveInformation = action.payload;

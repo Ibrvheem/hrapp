@@ -1,12 +1,12 @@
-import { Button, Container, Icon, InputAdornment, TextField } from "@mui/material";
+import { Button, Container, InputAdornment, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import { Mail, Phone, Search } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import SearchEmployeeModal from "./SearchEmployeeModal";
 import { getLeaves } from "./LeaveSlice";
-import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../../components/loadingScreen";
+import EmployeeLeaveModal from "./EmployeeLeaveModal";
 const useStyles = makeStyles((theme) => {
   return {
     leaves: {
@@ -46,28 +46,35 @@ const useStyles = makeStyles((theme) => {
 });
 function Leaves() {
   const classes = useStyles();
-  const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const dispatch = useDispatch();
   const { leaveInformation, status } = useSelector((state) => state.leaves);
 
-  const [staffOnLeave, setStaffOnLeave] = useState(leaveInformation.employees);
+  const [staffOnLeave, setStaffOnLeave] = useState([]);
 
   const handleSearch = (ev) => {
-    console.log(ev.target);
+    if (ev.target.value !== '')
     setStaffOnLeave(
       leaveInformation.employees.filter((staff) =>
-        (staff.first_name + staff.last_name).includes(ev.target.value)
+        (staff.first_name + staff.last_name).toLowerCase().includes(ev.target.value.toLowerCase())
       )
     );
   };
-  const token = sessionStorage.getItem("token");
   useEffect(() => {
-    if (!token) return navigate("/");
-    dispatch(getLeaves());
+    dispatch(getLeaves())
   }, []);
+  useEffect(() => {
+    setStaffOnLeave(leaveInformation.employees)
+  }, [leaveInformation]);
+
+  const [childModalOpen, setChildModalOpen] = useState(false);
+  const handleChildModalClose = () => {
+    setChildModalOpen(false);
+    dispatch(getLeaves())
+  }
+  const handleChildModalOpen = () => setChildModalOpen(true);
 
   return (
     <div className={classes.leaves}>
@@ -94,7 +101,13 @@ function Leaves() {
                   </Button>
                   <SearchEmployeeModal
                     handleModalClose={handleModalClose}
+                    handleChildModalOpen={handleChildModalOpen}
                     modalOpen={modalOpen}
+                  />
+
+                  <EmployeeLeaveModal
+                    handleChildModalClose={handleChildModalClose}
+                    childModalOpen={childModalOpen}
                   />
                 </div>
               </th>
@@ -150,7 +163,7 @@ function Leaves() {
                 Days Left
               </th>
             </tr>
-            {staffOnLeave?.map((row) => {
+            {staffOnLeave?.length ? staffOnLeave.map((row) => {
               const dayDifference =
                 (new Date(row.leaves[0].end_date).getTime() -
                   new Date(row.leaves[0].start_date).getTime()) /
@@ -203,7 +216,10 @@ function Leaves() {
                   <td className={classes.td}>{dayDifference + " day(s)"}</td>
                 </tr>
               );
-            })}
+            }) : <tr><td>
+              <Typography>No Employees Found</Typography>
+            </td></tr>
+            }
           </tbody>
         </table>
       </Container>
