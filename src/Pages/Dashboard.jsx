@@ -238,7 +238,7 @@ function Dashboard() {
                             </strong>
                             <br /> Title:{" "}
                             <strong>
-                              {employee.currentjob.position.name}
+                              {employee.currentjob?.position.name}
                             </strong>
                           </div>
                         </td>
@@ -265,10 +265,10 @@ function Dashboard() {
                         </td>
                         <td className={classes.td}>
                           <div>
-                            <strong> {employee.currentjob.type}</strong>
+                            <strong> {employee.currentjob?.type}</strong>
                           </div>
                           <div>
-                            {employee.currentjob.position.name}
+                            {employee.currentjob?.position.name}
                           </div>
                           <div>{employee?.subtitle}</div>
                         </td>

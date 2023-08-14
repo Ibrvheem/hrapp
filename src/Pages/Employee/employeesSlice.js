@@ -150,6 +150,7 @@ export const employeesSlice = createSlice({
     });
     builder.addCase(getEmployees.fulfilled, (state, action) => {
       state.employeeData = action.payload;
+      console.log(action.payload);
       state.status = "successful";
     });
     builder.addCase(getEmployee.fulfilled, (state, action) => {

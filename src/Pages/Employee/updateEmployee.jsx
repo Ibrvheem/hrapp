@@ -42,6 +42,7 @@ export default function UpdateEmployee() {
         image: null,
         resume: null,
         job: {
+            id: employee.currentjob.id,
             position: employee.currentjob.position.name,
             type: employee.currentjob.type,
             start_date,
@@ -138,7 +139,7 @@ export default function UpdateEmployee() {
                             size="large"
                             sx={{ padding: "1rem 4rem", fontWeight: 700, fontSize: "1.4rem" }}
                             onClick={() => {
-                                navigate("/");
+                                navigate(-1);
                             }}
                         >
                             Cancel

@@ -58,26 +58,26 @@ function AddEmployee() {
     const postFilePromises = [];
 
     postFilePromises.push(
-      // dispatch(postFile(resumeLocalFile)).then((action) => {
-      //   resumeUrl = action?.payload?.url;
-      //   if (resumeUrl) {
-      //     console.log("Resume URL: " + resumeUrl);
-      //     values.resume = resumeUrl;
-      //   } else {
-      //     console.log("Resume URL not found");
-      //   }
-      // })
+      dispatch(postFile(resumeLocalFile)).then((action) => {
+        resumeUrl = action?.payload?.url;
+        if (resumeUrl) {
+          console.log("Resume URL: " + resumeUrl);
+          values.resume = resumeUrl;
+        } else {
+          console.log("Resume URL not found");
+        }
+      })
     );
     postFilePromises.push(
-      // dispatch(postFile(passportLocalFile)).then((action) => {
-      //   passportUrl = action?.payload?.url;
-      //   if (passportUrl) {
-      //     console.log("Passport URL: " + passportUrl);
-      //     values.image = passportUrl;
-      //   } else {
-      //     console.log("Passport URL not found");
-      //   }
-      // })
+      dispatch(postFile(passportLocalFile)).then((action) => {
+        passportUrl = action?.payload?.url;
+        if (passportUrl) {
+          console.log("Passport URL: " + passportUrl);
+          values.image = passportUrl;
+        } else {
+          console.log("Passport URL not found");
+        }
+      })
     );
     Promise.all(postFilePromises).then(() => {
       console.log(values);
@@ -131,7 +131,7 @@ function AddEmployee() {
               size="large"
               sx={{ padding: "1rem 4rem", fontWeight: 700, fontSize: "1.4rem" }}
               onClick={() => {
-                navigate("/");
+                navigate(-1);
               }}
             >
               Cancel
