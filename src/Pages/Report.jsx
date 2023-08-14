@@ -73,9 +73,14 @@ function Report() {
     setActiveEmployee(employee);
   };
 
-  const handlePrintReport = (employee_id) => {
-    dispatch(getReport(employee_id)).then(() =>
+  const handlePrintReport = (employee_id, regenerate = null) => {
+    dispatch(getReport({ employee_id, regenerate })).then(() =>
       dispatch(unSetReport()))
+  };
+
+  const handleRegenerate = (employee_id) => {
+    console.log("regenerate");
+    handlePrintReport(employee_id, true)
   };
 
   const handlePrintAllReport = () => {
@@ -182,7 +187,20 @@ function Report() {
                     }}
                     startIcon={<Print />}
                   >
-                    Print Report
+                    Generate and Print Report
+                  </Button>
+                  <Button
+                    onClick={() => handleRegenerate(activeEmployee.id)}
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      fontWeight: 700,
+                      fontSize: "1.4rem",
+                      marginBlockStart: "2rem",
+                    }}
+                    startIcon={<Print />}
+                  >
+                    Regenerate and Print Report
                   </Button>
                 </Box>
               ) : (

@@ -8,10 +8,12 @@ const initialState = {
   error: null,
 };
 
-export const getReport = createAsyncThunk("report/get", async (employee_id) => {
+export const getReport = createAsyncThunk("report/get", async ({ employee_id, regenerate }) => {
   const token = sessionStorage.getItem("token");
+  let url = `${process.env.REACT_APP_API_URL}/report/${employee_id}`
+  if (regenerate) url = `${process.env.REACT_APP_API_URL}/report/${employee_id}?regenerate=True`
   const data = await fetch(
-    `${process.env.REACT_APP_API_URL}/report/${employee_id}`,
+    url,
     {
       headers: {
         authorization: `bearer ${token}`,
