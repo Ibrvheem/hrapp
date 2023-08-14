@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import React, { useEffect } from "react";
 import EmployeeLeave from "./EmployeeLeave";
 import { useDispatch } from "react-redux";
-import { getEmployee } from "../AddEmployees/employeesSlice";
+import { getEmployee } from "../Employee/employeesSlice";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { getLeaves } from "./LeaveSlice";

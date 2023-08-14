@@ -11,7 +11,7 @@ import {
   unSetReports,
 } from "./reports/reportsSlice";
 import { useNavigate } from "react-router-dom";
-import { getEmployees } from "./AddEmployees/employeesSlice";
+import { getEmployees } from "./Employee/employeesSlice";
 import LoadingScreen from "../components/loadingScreen";
 
 const useStyles = makeStyles((theme) => {

@@ -62,7 +62,7 @@ export const LeaveSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(getLeaves.rejected, (state, action) => {
-      state.status = "failed";
+      console.log(action.error)
     });
   },
 });

@@ -31,7 +31,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { getEmployees, putMinutesLost } from "../AddEmployees/employeesSlice";
+import { getEmployees, putMinutesLost } from "./employeesSlice";
 import { putAppraisal } from "../Appraisals/appraisalsSlice";
 
 const useStyles = makeStyles(() => {

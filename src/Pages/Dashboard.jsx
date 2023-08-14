@@ -5,7 +5,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SecondaryAppbar from "../components/SecondaryAppbar";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEmployee, getEmployees } from "./AddEmployees/employeesSlice";
+import { deleteEmployee, getEmployees } from "./Employee/employeesSlice";
 import LoadingScreen from "../components/loadingScreen";
 import EmployeeDetails from "./Employee/employeeDetails";
 import { getAppraisals } from "./Appraisals/appraisalsSlice";
@@ -79,8 +79,14 @@ function Dashboard() {
   };
 
   const handleDelete = () => {
-    dispatch(deleteEmployee(activeEmployee.id))
     handleModalClose()
+    dispatch(deleteEmployee(activeEmployee.id)).then(() =>
+      dispatch(getEmployees())
+    )
+  }
+
+  const handleEditEmployee = (employee) => {
+    navigate("/dashboard/updateEmployee", { state: employee })
   }
 
   const handleModalOpen = () => setModalOpen(true);
@@ -157,7 +163,7 @@ function Dashboard() {
               <SecondaryAppbar
                 title="Employee"
                 button="Add Employee"
-                link="/dashboard/addemployee"
+                link="/dashboard/addEmployee"
               />
 
               <Menu
@@ -171,7 +177,7 @@ function Dashboard() {
               >
                 <MenuItem onClick={() => setShowDetails(true)}>View Details</MenuItem>
                 <MenuItem onClick={handleModalOpen}>Delete</MenuItem>
-                {/* <MenuItem onClick={handleEdit}>Edit</MenuItem> */}
+                <MenuItem onClick={() => handleEditEmployee(activeEmployee)}>Edit</MenuItem>
               </Menu>
               <table className={classes.table} border={1}>
                 <thead className={classes.tableHead}>
@@ -232,9 +238,7 @@ function Dashboard() {
                             </strong>
                             <br /> Title:{" "}
                             <strong>
-                              {employee.jobs.map((job) => {
-                                return job?.position?.name;
-                              })}
+                              {employee.currentjob.position.name}
                             </strong>
                           </div>
                         </td>
@@ -261,18 +265,10 @@ function Dashboard() {
                         </td>
                         <td className={classes.td}>
                           <div>
-                            {employee?.jobs.map((job) => {
-                              return (
-                                <strong key={job.id}>
-                                  {job.type.toUpperCase()}
-                                </strong>
-                              );
-                            })}
+                            <strong> {employee.currentjob.type}</strong>
                           </div>
                           <div>
-                            {employee?.jobs.map((job) => {
-                              return job.position.name;
-                            })}
+                            {employee.currentjob.position.name}
                           </div>
                           <div>{employee?.subtitle}</div>
                         </td>

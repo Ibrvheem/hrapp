@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 
 const initialState = {
   employeeData: [],
@@ -20,8 +21,12 @@ export const getEmployees = createAsyncThunk("employees/get", async () => {
 export const postEmployees = createAsyncThunk(
   "employees/post",
   async (body) => {
+    const time_format = "HH:mm"
+    body.job.reporting_hour = body.job.reporting_hour.format(time_format)
+    body.job.closing_hour = body.job.closing_hour.format(time_format)
+    console.log(body);
     const token = sessionStorage.getItem("token");
-    const response = fetch(`${process.env.REACT_APP_API_URL}/employee`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/employee`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,8 +34,42 @@ export const postEmployees = createAsyncThunk(
       },
       body: JSON.stringify(body),
     });
+    return await response.json()
   }
 );
+
+function formatDateTime(body) {
+  const date_format = "YYYY-MM-DD"
+  const time_format = "HH:mm"
+  body.dob = body.dob.format(date_format)
+  body.job.start_date = body.job.start_date?.format(date_format)
+  body.job.end_date = body.job.end_date?.format(date_format) || null
+  body.job.reporting_hour = body.job.reporting_hour.format(time_format)
+  body.job.closing_hour = body.job.closing_hour.format(time_format)
+  body.currentjob = body.job
+  body.job = null
+}
+
+export const updateEmployee = createAsyncThunk(
+  "employee/update",
+  async ({ employeeId, body }) => {
+    // format date and time for Database
+    formatDateTime(body)
+    console.log(body);
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/employee/${employeeId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    return await response.json()
+  }
+);
+
 export const getEmployee = createAsyncThunk("employee/get", async (id) => {
   const token = sessionStorage.getItem("token");
   const response = await fetch(
@@ -113,10 +152,6 @@ export const employeesSlice = createSlice({
       state.employeeData = action.payload;
       state.status = "successful";
     });
-    builder.addCase(getEmployees.rejected, (state, action) => {
-      console.log(action.error);
-      state.status = "failed";
-    });
     builder.addCase(getEmployee.fulfilled, (state, action) => {
       console.log("fulfiled");
       state.getEmployee = action.payload;
@@ -135,6 +170,18 @@ export const employeesSlice = createSlice({
       state.status = "successful";
     });
     builder.addCase(postEmployees.rejected, (state, action) => {
+      console.log(action.error);
+      state.status = "failed";
+      state.error = action.error;
+    });
+    builder.addCase(updateEmployee.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(updateEmployee.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.status = "successful";
+    });
+    builder.addCase(updateEmployee.rejected, (state, action) => {
       console.log(action.error);
       state.status = "failed";
       state.error = action.error;

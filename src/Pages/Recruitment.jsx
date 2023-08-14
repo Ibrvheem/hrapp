@@ -5,7 +5,7 @@ import SecondaryAppbar from "../components/SecondaryAppbar";
 import { Add, Mail, Phone, Search } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import PositionModal from "./NewApplicant/PositionModal";
-import AddEmployee from "./AddEmployees/AddEmployee";
+import AddEmployee from "./Employee/AddEmployee";
 import { getApplicants } from "./NewApplicant/applicantsSlice";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/loadingScreen";

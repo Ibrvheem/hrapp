@@ -1,14 +1,11 @@
-import { Button, Card, Container, FormControl, FormGroup, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Button, Card, Container } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { DatePicker, LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { postEmployees, postFile } from "./employeesSlice";
-import { ClipLoader } from "react-spinners";
 import PersonalInformation from "../../components/PersonalInformation";
 import JobInformation from "../../components/JobInformation";
 
@@ -61,30 +58,30 @@ function AddEmployee() {
     const postFilePromises = [];
 
     postFilePromises.push(
-      dispatch(postFile(resumeLocalFile)).then((action) => {
-        resumeUrl = action?.payload?.url;
-        if (resumeUrl) {
-          console.log("Resume URL: " + resumeUrl);
-          values.resume = resumeUrl;
-        } else {
-          console.log("Resume URL not found");
-        }
-      })
+      // dispatch(postFile(resumeLocalFile)).then((action) => {
+      //   resumeUrl = action?.payload?.url;
+      //   if (resumeUrl) {
+      //     console.log("Resume URL: " + resumeUrl);
+      //     values.resume = resumeUrl;
+      //   } else {
+      //     console.log("Resume URL not found");
+      //   }
+      // })
     );
     postFilePromises.push(
-      dispatch(postFile(passportLocalFile)).then((action) => {
-        passportUrl = action?.payload?.url;
-        if (passportUrl) {
-          console.log("Passport URL: " + passportUrl);
-          values.image = passportUrl;
-        } else {
-          console.log("Passport URL not found");
-        }
-      })
+      // dispatch(postFile(passportLocalFile)).then((action) => {
+      //   passportUrl = action?.payload?.url;
+      //   if (passportUrl) {
+      //     console.log("Passport URL: " + passportUrl);
+      //     values.image = passportUrl;
+      //   } else {
+      //     console.log("Passport URL not found");
+      //   }
+      // })
     );
     Promise.all(postFilePromises).then(() => {
       console.log(values);
-      dispatch(postEmployees(values));
+      dispatch(postEmployees(values)).then(() => navigate(-1));
     });
   };
   const formik = useFormik({

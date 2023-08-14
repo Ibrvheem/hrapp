@@ -177,11 +177,9 @@ export const appraisalsSlice = createSlice({
     });
     builder.addCase(getAppraisals.pending, (state, action) => {
       state.status = "loading";
-      state.appraisalsData = action.payload;
     });
     builder.addCase(getAppraisals.rejected, (state, action) => {
-      state.status = "failed";
-      state.appraisalsData = action.payload;
+      console.log(action.error)
     });
     builder.addCase(postAppraisal.fulfilled, (state, action) => {
       state.status = "successful";

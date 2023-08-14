@@ -75,6 +75,7 @@ function Signin({ setToken }) {
           borderRadius: "1rem",
           maxWidth: "90% !important",
           textAlign: "center",
+          paddingBlock: '4rem'
         }}
       >
         <div>

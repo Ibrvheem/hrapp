@@ -3,7 +3,7 @@ import "./App.css";
 import Layout from "./components/Layout";
 import { Route, Router, RouterProvider, Routes, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
-import AddEmployee from "./Pages/AddEmployees/AddEmployee";
+import AddEmployee from "./Pages/Employee/AddEmployee";
 import Recruitment from "./Pages/Recruitment";
 import Leaves from "./Pages/Leaves/Leaves";
 import Appraisal from "./Pages/Appraisal";
@@ -14,6 +14,7 @@ import NewApplicant from "./Pages/NewApplicant/NewApplicant";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import RequireAuth from "./Pages/Auth/requireAuth";
+import UpdateEmployee from "./Pages/Employee/updateEmployee";
 const theme = createTheme({
   palette: {
     primary: {
@@ -59,8 +60,12 @@ function App({ children }) {
             element={<RequireAuth><Dashboard /></RequireAuth>}
           ></Route>
           <Route
-            path="/dashboard/addemployee"
+            path="/dashboard/addEmployee"
             element={<RequireAuth><AddEmployee /></RequireAuth>}
+          ></Route>
+          <Route
+            path="/dashboard/updateEmployee"
+            element={<RequireAuth><UpdateEmployee /></RequireAuth>}
           ></Route>
           <Route path="/recruitment" element={<RequireAuth><Recruitment /></RequireAuth>}></Route>
           <Route

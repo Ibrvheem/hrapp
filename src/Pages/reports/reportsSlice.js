@@ -51,7 +51,6 @@ export const reportsSlice = createSlice({
     });
     builder.addCase(getReport.rejected, (state, action) => {
       console.log(action.error);
-      state.status = "failed";
       state.error = action.error;
     });
     builder.addCase(getAllReports.fulfilled, (state, action) => {
@@ -63,7 +62,6 @@ export const reportsSlice = createSlice({
     });
     builder.addCase(getAllReports.rejected, (state, action) => {
       console.log(action.error);
-      state.status = "failed";
       state.error = action.error;
     });
     builder.addCase(unSetReport.fulfilled, (state, action) => {

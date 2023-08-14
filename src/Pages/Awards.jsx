@@ -28,7 +28,7 @@ import {
   getSessions,
   postAward,
 } from "./awards/awardsSlice";
-import { getEmployees } from "./AddEmployees/employeesSlice";
+import { getEmployees } from "./Employee/employeesSlice";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/loadingScreen";
 

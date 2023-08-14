@@ -121,7 +121,6 @@ export const awardsSlice = createSlice({
     });
     builder.addCase(getSessions.rejected, (state, action) => {
       console.log(action.error);
-      state.status = "failed";
       state.error = action.error;
     });
     builder.addCase(getAwards.fulfilled, (state, action) => {
@@ -133,7 +132,6 @@ export const awardsSlice = createSlice({
     });
     builder.addCase(getAwards.rejected, (state, action) => {
       console.log(action.error);
-      state.status = "failed";
       state.error = action.error;
     });
     builder.addCase(postAward.fulfilled, (state, action) => {

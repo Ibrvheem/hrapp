@@ -1,6 +1,7 @@
 import { FormControl, FormGroup, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 import React from "react";
 import { useLocation } from "react-router-dom";
 
@@ -48,8 +49,9 @@ function PersonalInformation({ formik }) {
                   <DatePicker
                     label="Date of Birth"
                     fullWidth
+                    {...formik.getFieldProps("dob")}
                     onChange={(value) => {
-                      formik.setFieldValue("dob", formatDate(value));
+                      formik.setFieldValue("dob", dayjs(value));
                     }}
                     renderInput={(params) => <TextField {...params} />}
                   />
