@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import positionsSlice from "../Pages/NewApplicant/positionsSlice";
-import applicantsSlice from "../Pages/NewApplicant/applicantsSlice";
+import applicantsSlice from "../Pages/Applicant/applicantsSlice";
 import employeesSlice from "../Pages/Employee/employeesSlice";
 import authSlice from "../Pages/Auth/authSlice";
 import LeaveSlice from "../Pages/Leaves/LeaveSlice";

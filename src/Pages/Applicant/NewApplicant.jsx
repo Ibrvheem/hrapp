@@ -1,17 +1,14 @@
-import { Button, Card, Container, FormControl, FormGroup, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Button, Card, Container } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { DatePicker, LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import React, { useState } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import PersonalInformation from "../../components/PersonalInformation";
 import JobInformation from "../../components/JobInformation";
-import { useDispatch, useSelector } from "react-redux";
-import { postApplicant, postFile } from "./applicantsSlice";
-import { getPositions } from "./positionsSlice";
-import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { postApplicant } from "./applicantsSlice";
+
 const useStyles = makeStyles((theme) => {
   return {
     recruitement: {
@@ -64,6 +61,7 @@ const useStyles = makeStyles((theme) => {
     },
   };
 });
+
 function Recruitment() {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -80,7 +78,7 @@ function Recruitment() {
     phone: "",
     image: null,
     resume: null,
-    position_id: "",
+    job: { position: "", position_id: '' },
   };
 
   const validationSchema = Yup.object({
@@ -88,41 +86,41 @@ function Recruitment() {
     last_name: Yup.string(),
   });
   const onSubmit = (values) => {
-    const resumeLocalFile = values.resume;
-    const passportLocalFile = values.image;
-    let resumeUrl;
-    let passportUrl;
+    // const resumeLocalFile = values.resume;
+    // const passportLocalFile = values.image;
+    // let resumeUrl;
+    // let passportUrl;
 
-    const postFilePromises = [];
+    // const postFilePromises = [];
 
-    postFilePromises.push(
-      dispatch(postFile(resumeLocalFile)).then((action) => {
-        resumeUrl = action?.payload?.url;
-        if (resumeUrl) {
-          console.log("Resume URL: " + resumeUrl);
-          values.resume = resumeUrl;
-        } else {
-          console.log("Resume URL not found");
-        }
-      })
-    );
+    // postFilePromises.push(
+    //   dispatch(postFile(resumeLocalFile)).then((action) => {
+    //     resumeUrl = action?.payload?.url;
+    //     if (resumeUrl) {
+    //       console.log("Resume URL: " + resumeUrl);
+    //       values.resume = resumeUrl;
+    //     } else {
+    //       console.log("Resume URL not found");
+    //     }
+    //   })
+    // );
 
-    postFilePromises.push(
-      dispatch(postFile(passportLocalFile)).then((action) => {
-        passportUrl = action?.payload?.url;
-        if (passportUrl) {
-          console.log("Passport URL: " + passportUrl);
-          values.image = passportUrl;
-        } else {
-          console.log("Passport URL not found");
-        }
-      })
-    );
+    // postFilePromises.push(
+    //   dispatch(postFile(passportLocalFile)).then((action) => {
+    //     passportUrl = action?.payload?.url;
+    //     if (passportUrl) {
+    //       console.log("Passport URL: " + passportUrl);
+    //       values.image = passportUrl;
+    //     } else {
+    //       console.log("Passport URL not found");
+    //     }
+    //   })
+    // );
 
-    Promise.all(postFilePromises).then(() => {
-      console.log(values);
-      dispatch(postApplicant(values));
-    });
+    // Promise.all(postFilePromises).then(() => {
+    dispatch(postApplicant(values));
+    navigate(-1)
+    // });
   };
   const formik = useFormik({
     initialValues,

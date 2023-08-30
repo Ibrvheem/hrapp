@@ -1,7 +1,14 @@
 import { ThemeProvider, createTheme } from "@mui/material";
 import "./App.css";
 import Layout from "./components/Layout";
-import { Route, Router, RouterProvider, Routes, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
+import {
+  Route,
+  Router,
+  RouterProvider,
+  Routes,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
 import AddEmployee from "./Pages/Employee/AddEmployee";
 import Recruitment from "./Pages/Recruitment";
@@ -10,7 +17,7 @@ import Appraisal from "./Pages/Appraisal";
 import Awards from "./Pages/Awards";
 import Report from "./Pages/Report";
 import Signin from "./Pages/Auth/Signin";
-import NewApplicant from "./Pages/NewApplicant/NewApplicant";
+import NewApplicant from "./Pages/Applicant/NewApplicant";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import RequireAuth from "./Pages/Auth/requireAuth";
@@ -57,25 +64,76 @@ function App({ children }) {
         <Route path="/" element={<Layout />}>
           <Route
             path="/dashboard"
-            element={<RequireAuth><Dashboard /></RequireAuth>}
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
           ></Route>
           <Route
             path="/dashboard/addEmployee"
-            element={<RequireAuth><AddEmployee /></RequireAuth>}
+            element={
+              <RequireAuth>
+                <AddEmployee />
+              </RequireAuth>
+            }
           ></Route>
           <Route
             path="/dashboard/updateEmployee"
-            element={<RequireAuth><UpdateEmployee /></RequireAuth>}
+            element={
+              <RequireAuth>
+                <UpdateEmployee />
+              </RequireAuth>
+            }
           ></Route>
-          <Route path="/recruitment" element={<RequireAuth><Recruitment /></RequireAuth>}></Route>
+          <Route
+            path="/recruitment"
+            element={
+              <RequireAuth>
+                <Recruitment />
+              </RequireAuth>
+            }
+          ></Route>
           <Route
             path="/recruitment/applicant"
-            element={<RequireAuth><NewApplicant /></RequireAuth>}
+            element={
+              <RequireAuth>
+                <NewApplicant />
+              </RequireAuth>
+            }
           ></Route>
-          <Route path="/leaves" element={<RequireAuth><Leaves /></RequireAuth>}></Route>
-          <Route path="/appraisal" element={<RequireAuth><Appraisal /></RequireAuth>}></Route>
-          <Route path="/awards" element={<RequireAuth><Awards /></RequireAuth>}></Route>
-          <Route path="/report" element={<RequireAuth><Report /></RequireAuth>}></Route>
+          <Route
+            path="/leaves"
+            element={
+              <RequireAuth>
+                <Leaves />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/appraisal"
+            element={
+              <RequireAuth>
+                <Appraisal />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/awards"
+            element={
+              <RequireAuth>
+                <Awards />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/report"
+            element={
+              <RequireAuth>
+                <Report />
+              </RequireAuth>
+            }
+          ></Route>
         </Route>
       </>
     )

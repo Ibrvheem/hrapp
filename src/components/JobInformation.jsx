@@ -12,23 +12,14 @@ function JobInformation({ formik }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { positions: allPositions } = useSelector((state) => state.positions);
+  const paths = ["/recruitment", "/dashboard/addEmployee", "/dashboard/updateEmployee"]
 
   useEffect(() => {
     dispatch(getPositions());
-    console.log(allPositions);
   }, []);
-  function formatDate(arg) {
-    const formattedDate = new Date(arg);
-    const year = formattedDate.getFullYear();
-    const month = String(formattedDate.getMonth() + 1).padStart(2, "0");
-    const day = String(formattedDate.getDate()).padStart(2, "0");
-    const formattedDateString = `${year}-${month}-${day}`;
-    return formattedDateString;
-  }
 
   return (
     <div>
-      {" "}
       <FormGroup>
         <Typography variant="body2" sx={{ padding: "2rem 0rem" }}>
           Job Information
@@ -37,8 +28,8 @@ function JobInformation({ formik }) {
           <Grid item md={6}>
             <FormControl fullWidth>
               <InputLabel>Job Role</InputLabel>
-              {location.pathname == "/recruitment/applicant" ? (
-                <Select label="Job Role" value="" name="position_id" {...formik.getFieldProps("position_id")}>
+              {paths.includes(location.pathname) || location.pathname === '/recruitment/applicant' ? (
+                <Select label="Job Role" value="" name="position_id" {...formik.getFieldProps("job.position_id")}>
                   {allPositions?.positions?.map((position) => {
                     return (
                       <MenuItem value={position.id} key={position.id}>
@@ -60,7 +51,7 @@ function JobInformation({ formik }) {
               )}
             </FormControl>
           </Grid>
-          {location.pathname === "/dashboard/addEmployee" || location.pathname === "/dashboard/updateEmployee" ? (
+          {paths.includes(location.pathname) ? (
             <>
               <Grid item md={6}>
                 <FormControl fullWidth>
@@ -119,7 +110,6 @@ function JobInformation({ formik }) {
                       onChange={(value) => {
                         formik.setFieldValue("job.start_date", value);
                       }}
-                      renderInput={(params) => <TextField {...params} />}
                     />
                   </LocalizationProvider>{" "}
                 </FormControl>

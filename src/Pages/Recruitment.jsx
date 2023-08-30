@@ -1,14 +1,16 @@
-import { Box, Button, Container, Icon, InputAdornment, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Icon, InputAdornment, Menu, MenuItem, Modal, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SecondaryAppbar from "../components/SecondaryAppbar";
-import { Add, Mail, Phone, Search } from "@mui/icons-material";
+import { Add, Mail, MoreVert, Phone, Search } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import PositionModal from "./NewApplicant/PositionModal";
-import AddEmployee from "./Employee/AddEmployee";
-import { getApplicants } from "./NewApplicant/applicantsSlice";
+import PositionModal from "./Applicant/PositionModal";
+import { getApplicants } from "./Applicant/applicantsSlice";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/loadingScreen";
+import HireEmployeeModal from "./Applicant/hireEmployeeModal";
+import ApplicantleModal from "./Applicant/applicantModal";
+
 const useStyles = makeStyles((theme) => {
   return {
     recruitement: {
@@ -27,7 +29,7 @@ const useStyles = makeStyles((theme) => {
     },
 
     table: {
-      width: "100%",
+      minWidth: "100%",
       borderCollapse: "collapse",
       border: "1px solid #2fd5c8",
       marginTop: "5rem",
@@ -48,26 +50,78 @@ const useStyles = makeStyles((theme) => {
 function Recruitment() {
   const classes = useStyles();
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [modals, setModals] = useState({ schedule: false, hire: false })
+  const [activeRecruit, setActiveRecruit] = useState({});
+
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const dispatch = useDispatch();
   const { applicantsData, status } = useSelector((state) => state.applicants);
-  const applicants = applicantsData.applicants;
+  const [applicants, setApplicants] = useState(applicantsData.applicants);
+
+
+  const handleOpenOptions = (ev, employee) => {
+    setAnchorEl(ev.currentTarget);
+    setActiveRecruit(employee)
+  };
+  const handleCloseOptions = () => {
+    setAnchorEl(null);
+  };
+
+  const handleRejectModal = () => {
+    setModals(prev => ({ ...prev, reject: true }));
+    handleCloseOptions()
+  }
+  const handleHireEmployee = () => {
+    setModals(prev => ({ ...prev, hire: true }));
+    handleCloseOptions()
+  }
+  const handleScheduleModal = () => {
+    setModals(prev => ({ ...prev, schedule: true }));
+    setAnchorEl(null)
+  }
+  const handleViewModal = () => {
+    setModals(prev => ({ ...prev, viewSchedule: true }));
+    setAnchorEl(null)
+  }
+  const handleModalsClose = () => setModals({ reject: false, schedule: false, hire: false })
 
   useEffect(() => {
     dispatch(getApplicants());
   }, []);
+  useEffect(() => {
+    setApplicants(applicantsData.applicants)
+  }, [applicantsData]);
 
   return (
     <div className={classes.recruitement}>
       {status === "loading" ? <LoadingScreen /> : null}
+      <ApplicantleModal modalOpen={modals} handleModalClose={(handleModalsClose)} setModals={setModals} activeRecruit={activeRecruit} />
+      <HireEmployeeModal activeRecruit={activeRecruit} open={modals.hire} handleModalsClose={handleModalsClose} />
       <Container>
         <SecondaryAppbar
           title="Employee"
           button="New Applicant"
           link="/recruitment/applicant"
         />
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleCloseOptions}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          {activeRecruit.interview_date ?
+            <MenuItem onClick={handleViewModal}>View Schedule</MenuItem> :
+            <MenuItem onClick={handleScheduleModal}>Schedule Interview</MenuItem>
+          }
+          <MenuItem onClick={handleHireEmployee}>Hire</MenuItem>
+          <MenuItem onClick={handleRejectModal}>Reject Application</MenuItem>
+        </Menu>
         <table className={classes.table} border={1}>
           <thead className={classes.tableHead}>
             <tr>
@@ -150,44 +204,28 @@ function Recruitment() {
                 <tr key={"applicant" + row.id}>
                   <td
                     className={classes.td}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "2rem",
-                    }}
                   >
-                    {/* <img src="" alt="" className={classes.employeeImage} /> */}
-                    <div>
-                      <strong>
-                        {row.first_name} {row.last_name}
-                      </strong>
-                      <br /> Title: <strong>{row.title}</strong>
-                    </div>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: "2rem", '&>*': { flexShrink: 0 } }}>
+                      <img src="" alt="" className={classes.employeeImage} />
+                      <strong>{row.first_name} {row.last_name}</strong>
+                    </Box>
+                  </td>
+                  <td className={classes.td} >
+                    <Box style={{ display: 'flex', justifyContent: 'center' }}>
+                      <Box>
+                        <div style={{ whiteSpace: 'nowrap' }}><Mail color="primary" sx={{ marginInlineEnd: '1rem' }} /> {row.email}</div>
+                        <div><Phone color="primary" sx={{ marginInlineEnd: '1rem' }} /> {row.phone}</div>
+                      </Box>
+                    </Box>
                   </td>
                   <td className={classes.td}>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "1rem",
-                      }}
-                    >
-                      <Mail color="primary" /> {row.email}
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "1rem",
-                      }}
-                    >
-                      <Phone color="primary" />
-                      {row.phone}
-                    </div>
-                  </td>
-                  <td className={classes.td}>
-                    <div>{row.position?.name}</div>
-                    <div>{row.subtitle}</div>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+                      <Box>
+                        <div>{row.position?.name}</div>
+                        <div>{row.subtitle}</div>
+                      </Box>
+                      <Button onClick={(ev) => handleOpenOptions(ev, row)}><MoreVert sx={{ fontSize: '2rem' }} /></Button>
+                    </Box>
                   </td>
                 </tr>
               );
