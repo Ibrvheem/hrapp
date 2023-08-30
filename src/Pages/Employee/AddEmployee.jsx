@@ -51,38 +51,38 @@ function AddEmployee() {
     last_name: Yup.string(),
   });
   const onSubmit = (values) => {
-    const resumeLocalFile = values.resume;
-    const passportLocalFile = values.image;
-    let resumeUrl;
-    let passportUrl;
-    const postFilePromises = [];
+    // const resumeLocalFile = values.resume;
+    // const passportLocalFile = values.image;
+    // let resumeUrl;
+    // let passportUrl;
+    // const postFilePromises = [];
 
-    postFilePromises.push(
-      dispatch(postFile(resumeLocalFile)).then((action) => {
-        resumeUrl = action?.payload?.url;
-        if (resumeUrl) {
-          console.log("Resume URL: " + resumeUrl);
-          values.resume = resumeUrl;
-        } else {
-          console.log("Resume URL not found");
-        }
-      })
-    );
-    postFilePromises.push(
-      dispatch(postFile(passportLocalFile)).then((action) => {
-        passportUrl = action?.payload?.url;
-        if (passportUrl) {
-          console.log("Passport URL: " + passportUrl);
-          values.image = passportUrl;
-        } else {
-          console.log("Passport URL not found");
-        }
-      })
-    );
-    Promise.all(postFilePromises).then(() => {
+    // postFilePromises.push(
+    //   dispatch(postFile(resumeLocalFile)).then((action) => {
+    //     resumeUrl = action?.payload?.url;
+    //     if (resumeUrl) {
+    //       console.log("Resume URL: " + resumeUrl);
+    //       values.resume = resumeUrl;
+    //     } else {
+    //       console.log("Resume URL not found");
+    //     }
+    //   })
+    // );
+    // postFilePromises.push(
+    //   dispatch(postFile(passportLocalFile)).then((action) => {
+    //     passportUrl = action?.payload?.url;
+    //     if (passportUrl) {
+    //       console.log("Passport URL: " + passportUrl);
+    //       values.image = passportUrl;
+    //     } else {
+    //       console.log("Passport URL not found");
+    //     }
+    //   })
+    // );
+    // Promise.all(postFilePromises).then(() => {
       console.log(values);
       dispatch(postEmployees(values)).then(() => navigate(-1));
-    });
+    // });
   };
   const formik = useFormik({
     initialValues,
