@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import dayjs from "dayjs";
 
 const initialState = {
   employeeData: [],
@@ -7,6 +6,18 @@ const initialState = {
   status: "idle",
   error: null,
 };
+
+function formatTime(body) {
+  const time_format = "HH:mm";
+  body.job.reporting_hour = body.job.reporting_hour.format(time_format);
+  body.job.closing_hour = body.job.closing_hour.format(time_format);
+}
+function formatDate(body) {
+  const date_format = "YYYY-MM-DD";
+  body.dob = body.dob.format(date_format);
+  body.job.start_date = body.job.start_date?.format(date_format);
+}
+
 export const getEmployees = createAsyncThunk("employees/get", async () => {
   const token = sessionStorage.getItem("token");
   const data = await fetch(`${process.env.REACT_APP_API_URL}/employee`, {
@@ -21,10 +32,8 @@ export const getEmployees = createAsyncThunk("employees/get", async () => {
 export const postEmployees = createAsyncThunk(
   "employees/post",
   async (body) => {
-    const time_format = "HH:mm"
-    body.job.reporting_hour = body.job.reporting_hour.format(time_format)
-    body.job.closing_hour = body.job.closing_hour.format(time_format)
-    console.log(body);
+    formatTime(body);
+    formatDate(body);
     const token = sessionStorage.getItem("token");
     const response = await fetch(`${process.env.REACT_APP_API_URL}/employee`, {
       method: "POST",
@@ -34,39 +43,31 @@ export const postEmployees = createAsyncThunk(
       },
       body: JSON.stringify(body),
     });
-    return await response.json()
+    return await response.json();
   }
 );
-
-function formatDateTime(body) {
-  const date_format = "YYYY-MM-DD"
-  const time_format = "HH:mm"
-  body.dob = body.dob.format(date_format)
-  body.job.start_date = body.job.start_date?.format(date_format)
-  body.job.end_date = body.job.end_date?.format(date_format) || null
-  body.job.reporting_hour = body.job.reporting_hour.format(time_format)
-  body.job.closing_hour = body.job.closing_hour.format(time_format)
-  body.currentjob = body.job
-  body.job = null
-}
 
 export const updateEmployee = createAsyncThunk(
   "employee/update",
   async ({ employeeId, body }) => {
-    // format date and time for Database
-    formatDateTime(body)
-    console.log(body);
+    formatTime(body);
+    formatDate(body);
+    body.currentjob = body.job;
+    body.job = null;
     const token = sessionStorage.getItem("token");
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/employee/${employeeId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/employee/${employeeId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      }
+    );
 
-    return await response.json()
+    return await response.json();
   }
 );
 
