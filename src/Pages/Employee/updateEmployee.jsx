@@ -43,6 +43,7 @@ export default function UpdateEmployee() {
         resume: null,
         job: {
             id: employee.currentjob.id,
+            position_id: employee.currentjob.position.id,
             position: employee.currentjob.position.name,
             type: employee.currentjob.type,
             start_date,

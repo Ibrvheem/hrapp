@@ -4,7 +4,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getPositions } from "../Pages/NewApplicant/positionsSlice";
+import { getPositions } from "../Pages/Applicant/positionsSlice";
 import dayjs from "dayjs";
 
 function JobInformation({ formik }) {

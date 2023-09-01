@@ -34,7 +34,7 @@ function AddEmployee() {
     image: null,
     resume: null,
     job: {
-      position: "",
+      position_id: "",
       type: "",
       start_date: "",
       end_date: "",
@@ -80,8 +80,8 @@ function AddEmployee() {
     //   })
     // );
     // Promise.all(postFilePromises).then(() => {
-      console.log(values);
-      dispatch(postEmployees(values)).then(() => navigate(-1));
+    console.log(values);
+    dispatch(postEmployees(values)).then(() => navigate(-1));
     // });
   };
   const formik = useFormik({
