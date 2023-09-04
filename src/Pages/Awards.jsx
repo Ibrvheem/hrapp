@@ -18,7 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   assignAward,
@@ -29,7 +29,6 @@ import {
   postAward,
 } from "./awards/awardsSlice";
 import { getEmployees } from "./Employee/employeesSlice";
-import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/loadingScreen";
 
 const useStyles = makeStyles((theme) => {
@@ -176,7 +175,6 @@ function Award({
 
 function Awards() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const classes = useStyles();
   const {
     awards: { awards },
@@ -338,10 +336,10 @@ function Awards() {
                     >
                       {sessions.length
                         ? sessions?.map((session) => (
-                            <MenuItem key={session.name} value={session.name}>
-                              {session.name}
-                            </MenuItem>
-                          ))
+                          <MenuItem key={session.name} value={session.name}>
+                            {session.name}
+                          </MenuItem>
+                        ))
                         : null}
                     </Select>
                   </FormControl>
@@ -419,10 +417,10 @@ function Awards() {
                     >
                       {sessions.length
                         ? sessions?.map((session) => (
-                            <MenuItem key={session.name} value={session.name}>
-                              {session.name}
-                            </MenuItem>
-                          ))
+                          <MenuItem key={session.name} value={session.name}>
+                            {session.name}
+                          </MenuItem>
+                        ))
                         : null}
                     </Select>
                   </FormControl>
@@ -560,10 +558,10 @@ function Awards() {
                   >
                     {sessions.length
                       ? sessions.map((session) => (
-                          <MenuItem key={session.name} value={session.name}>
-                            {session.name}
-                          </MenuItem>
-                        ))
+                        <MenuItem key={session.name} value={session.name}>
+                          {session.name}
+                        </MenuItem>
+                      ))
                       : null}
                   </Select>
                 </FormControl>
@@ -612,16 +610,16 @@ function Awards() {
                       </Typography>
                       {activeAward.employee.awards.length
                         ? activeAward.employee.awards?.map((award) => (
-                            <Box
-                              sx={{ marginBlockEnd: "1rem" }}
-                              key={"detail" + award.id}
-                            >
-                              <Typography fontWeight={600}>
-                                {award.title}
-                              </Typography>
-                              <Typography>{award.description}</Typography>
-                            </Box>
-                          ))
+                          <Box
+                            sx={{ marginBlockEnd: "1rem" }}
+                            key={"detail" + award.id}
+                          >
+                            <Typography fontWeight={600}>
+                              {award.title}
+                            </Typography>
+                            <Typography>{award.description}</Typography>
+                          </Box>
+                        ))
                         : null}
                     </Box>
                   ) : (

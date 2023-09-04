@@ -83,7 +83,6 @@ const useStyles = makeStyles(() => {
 export default function EmployeeDetails({ sessions, activeEmployee, setActiveEmployee, handleCloseDetails }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { employeeData: { employees } } = useSelector((state) => state.employees);
   const [activeTab, setActiveTab] = useState(1);
   const [filterBySession, setFilterBySession] = useState("");
   const [modalOpen, setModalOpen] = useState(false);

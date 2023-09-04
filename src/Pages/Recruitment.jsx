@@ -1,4 +1,4 @@
-import { Box, Button, Container, Icon, InputAdornment, Menu, MenuItem, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, InputAdornment, Menu, MenuItem, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import SecondaryAppbar from "../components/SecondaryAppbar";
@@ -6,7 +6,6 @@ import { Add, Mail, MoreVert, Phone, Search } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import PositionModal from "./Applicant/PositionModal";
 import { getApplicants } from "./Applicant/applicantsSlice";
-import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/loadingScreen";
 import HireEmployeeModal from "./Applicant/hireEmployeeModal";
 import ApplicantleModal from "./Applicant/applicantModal";
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme) => {
 });
 function Recruitment() {
   const classes = useStyles();
-  const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [modals, setModals] = useState({ schedule: false, hire: false })

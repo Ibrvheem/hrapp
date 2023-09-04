@@ -1,16 +1,13 @@
-import { EmojiEvents, Print } from "@mui/icons-material";
+import { Print } from "@mui/icons-material";
 import { Box, Button, Card, Container, Grid, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllReports,
-  getEmployeesFromLocalApi,
   getReport,
   unSetReport,
-  unSetReports,
 } from "./reports/reportsSlice";
-import { useNavigate } from "react-router-dom";
 import { getEmployees } from "./Employee/employeesSlice";
 import LoadingScreen from "../components/loadingScreen";
 
@@ -56,7 +53,6 @@ function Report() {
     "December",
   ];
   const classes = useStyles();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     employeeData: { employees },
@@ -79,7 +75,6 @@ function Report() {
   };
 
   const handleRegenerate = (employee_id) => {
-    console.log("regenerate");
     handlePrintReport(employee_id, true)
   };
 
@@ -165,12 +160,10 @@ function Report() {
                         const endDate = new Date(leave.end_date);
                         return (
                           <Box key={"leave-" + leave.id}>
-                            <Typography>{`${startDate.getDate()} ${
-                              months[startDate.getMonth()]
-                            }, ${startDate.getFullYear()}`}</Typography>
-                            <Typography>{`${endDate.getDate()} ${
-                              months[endDate.getMonth()]
-                            }, ${endDate.getFullYear()}`}</Typography>
+                            <Typography>{`${startDate.getDate()} ${months[startDate.getMonth()]
+                              }, ${startDate.getFullYear()}`}</Typography>
+                            <Typography>{`${endDate.getDate()} ${months[endDate.getMonth()]
+                              }, ${endDate.getFullYear()}`}</Typography>
                           </Box>
                         );
                       })}

@@ -35,12 +35,11 @@ export const positionsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(createPosition.fulfilled, (state, action) => {
       state.status = "successful";
-      console.log("successful");
     });
     builder.addCase(createPosition.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error;
-      console.log(state.status, state.error);
+      console.log(state.error);
     });
     builder.addCase(getPositions.fulfilled, (state, action) => {
       state.positions = action.payload;

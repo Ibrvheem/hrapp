@@ -16,7 +16,6 @@ export const getSessions = createAsyncThunk("sessions/get", async () => {
   return data;
 });
 export const postSession = createAsyncThunk("session/post", async (body) => {
-  console.log(body);
   const token = sessionStorage.getItem("token");
   const response = await fetch(`${process.env.REACT_APP_API_URL}/session`, {
     method: "POST",
@@ -89,7 +88,6 @@ export const sessionsSlice = createSlice({
       })
       .addCase(postSession.fulfilled, (state, action) => {
         state.status = "successful";
-        console.log(action.payload);
       })
       .addCase(postSession.rejected, (state, action) => {
         const error = action.error.message;

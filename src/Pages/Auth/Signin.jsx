@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "./authSlice";
-import { BeatLoader, ClipLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => {
@@ -60,7 +60,7 @@ function Signin({ setToken }) {
     });
   };
 
-  const signInInputFieldStyles = {style: {fontSize: '1.5rem'}}
+  const signInInputFieldStyles = { style: { fontSize: '1.5rem' } }
   // if (sessionStorage.getItem("token")) navigate("/dashboard");
   return (
     <div className={classes.signin}>
@@ -82,7 +82,7 @@ function Signin({ setToken }) {
           <img src="logo.png" alt="" height={90} />
         </div>
         <div>
-          <Typography variant="h4" component="h1" sx={{fontWeight: 700, marginBlockEnd: '3rem'}} >Welcome</Typography>
+          <Typography variant="h4" component="h1" sx={{ fontWeight: 700, marginBlockEnd: '3rem' }} >Welcome</Typography>
           <Typography variant="h5" component="p">Fill in your credentials to log in</Typography>
         </div>
         <Card className={classes.signInCard} elevation={0}>
@@ -97,12 +97,12 @@ function Signin({ setToken }) {
               setEmail(e.target.value);
             }}
           />
-          <div style={{position:'relative', width: '100%'}}>
+          <div style={{ position: 'relative', width: '100%' }}>
             <TextField
-            className={classes.signInInputField}
+              className={classes.signInInputField}
               variant="standard"
               label="Password"
-              type={showPassword? "text": "password"}
+              type={showPassword ? "text" : "password"}
               fullWidth
               inputProps={signInInputFieldStyles}
               InputLabelProps={signInInputFieldStyles}
@@ -110,7 +110,7 @@ function Signin({ setToken }) {
                 setPassword(e.target.value);
               }}
             />
-            <button className={classes.showPasswordBtn} onClick={()=> setShowPassword(prev=> !prev)}> {showPassword? <VisibilityOff sx={{fontSize: '2.5rem'}} /> : <Visibility sx={{fontSize: '2.5rem'}} />} </button>
+            <button className={classes.showPasswordBtn} onClick={() => setShowPassword(prev => !prev)}> {showPassword ? <VisibilityOff sx={{ fontSize: '2.5rem' }} /> : <Visibility sx={{ fontSize: '2.5rem' }} />} </button>
           </div>
           <Button
             variant="contained"

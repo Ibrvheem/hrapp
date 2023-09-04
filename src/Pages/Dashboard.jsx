@@ -1,8 +1,8 @@
-import { Add, ErrorOutline, Mail, MoreVert, Phone } from "@mui/icons-material";
-import { Box, Button, Container, IconButton, Menu, MenuItem, Modal, Paper, Typography } from "@mui/material";
-import { makeStyles, styled } from "@mui/styles";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { ErrorOutline, Mail, MoreVert, Phone } from "@mui/icons-material";
+import { Box, Button, Container, Menu, MenuItem, Modal, Typography } from "@mui/material";
+import { makeStyles, } from "@mui/styles";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SecondaryAppbar from "../components/SecondaryAppbar";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteEmployee, getEmployees } from "./Employee/employeesSlice";
@@ -160,126 +160,126 @@ function Dashboard() {
           <EmployeeDetails activeEmployee={activeEmployee} setActiveEmployee={setActiveEmployee} handleCloseDetails={handleCloseDetails} sessions={sessions} />
         ) : (
           <>
-              <SecondaryAppbar
-                title="Employee"
-                button="Add Employee"
-                link="/dashboard/addEmployee"
-              />
+            <SecondaryAppbar
+              title="Employee"
+              button="Add Employee"
+              link="/dashboard/addEmployee"
+            />
 
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleCloseOptions}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}
-              >
-                <MenuItem onClick={() => setShowDetails(true)}>View Details</MenuItem>
-                <MenuItem onClick={handleModalOpen}>Delete</MenuItem>
-                <MenuItem onClick={() => handleEditEmployee(activeEmployee)}>Edit</MenuItem>
-              </Menu>
-              <table className={classes.table} border={1}>
-                <thead className={classes.tableHead}>
-                  <tr>
-                    <th
-                      className={classes.td}
-                      style={{
-                        border: "1px solid #2fd5c8",
-                        padding: "2rem 0rem",
-                      }}
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseOptions}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem onClick={() => setShowDetails(true)}>View Details</MenuItem>
+              <MenuItem onClick={handleModalOpen}>Delete</MenuItem>
+              <MenuItem onClick={() => handleEditEmployee(activeEmployee)}>Edit</MenuItem>
+            </Menu>
+            <table className={classes.table} border={1}>
+              <thead className={classes.tableHead}>
+                <tr>
+                  <th
+                    className={classes.td}
+                    style={{
+                      border: "1px solid #2fd5c8",
+                      padding: "2rem 0rem",
+                    }}
+                  >
+                    Employee
+                  </th>
+                  <th
+                    className={classes.td}
+                    style={{
+                      border: "1px solid #2fd5c8",
+                      padding: "2rem 0rem",
+                    }}
+                  >
+                    Contact
+                  </th>
+                  <th
+                    className={classes.td}
+                    style={{
+                      border: "1px solid #2fd5c8",
+                      padding: "2rem 0rem",
+                    }}
+                  >
+                    Status
+                  </th>
+                  <th
+                    className={classes.td}
+                    style={{
+                      border: "1px solid #2fd5c8"
+                    }}
+                  ></th>
+                </tr>
+              </thead>
+              <tbody>
+                {employees?.map((employee) => {
+                  return (
+                    <tr
+                      key={employee.id}
                     >
-                      Employee
-                    </th>
-                    <th
-                      className={classes.td}
-                      style={{
-                        border: "1px solid #2fd5c8",
-                        padding: "2rem 0rem",
-                      }}
-                    >
-                      Contact
-                    </th>
-                    <th
-                      className={classes.td}
-                      style={{
-                        border: "1px solid #2fd5c8",
-                        padding: "2rem 0rem",
-                      }}
-                    >
-                      Status
-                    </th>
-                    <th
-                      className={classes.td}
-                      style={{
-                        border: "1px solid #2fd5c8"
-                      }}
-                    ></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {employees?.map((employee) => {
-                    return (
-                      <tr
-                        key={employee.id}
+                      <td
+                        className={classes.td}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "2rem",
+                        }}
                       >
-                        <td
-                          className={classes.td}
+                        {/* <img src="" alt="" className={classes.employeeImage} /> */}
+                        <div>
+                          <strong>
+                            {employee?.first_name} {employee?.last_name}
+                          </strong>
+                          <br /> Title:{" "}
+                          <strong>
+                            {employee.currentjob?.position.name}
+                          </strong>
+                        </div>
+                      </td>
+                      <td className={classes.td}>
+                        <div
                           style={{
                             display: "flex",
                             alignItems: "center",
-                            gap: "2rem",
+                            gap: "1rem",
                           }}
                         >
-                          {/* <img src="" alt="" className={classes.employeeImage} /> */}
-                          <div>
-                            <strong>
-                              {employee?.first_name} {employee?.last_name}
-                            </strong>
-                            <br /> Title:{" "}
-                            <strong>
-                              {employee.currentjob?.position.name}
-                            </strong>
-                          </div>
-                        </td>
-                        <td className={classes.td}>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "1rem",
-                            }}
-                          >
-                            <Mail color="primary" /> {employee.email}
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "1rem",
-                            }}
-                          >
-                            <Phone color="primary" />
-                            {employee?.phone}
-                          </div>
-                        </td>
-                        <td className={classes.td}>
-                          <div>
-                            <strong> {employee.currentjob?.type}</strong>
-                          </div>
-                          <div>
-                            {employee.currentjob?.position.name}
-                          </div>
-                          <div>{employee?.subtitle}</div>
-                        </td>
-                        <td className={classes.td}>
-                          <Button onClick={(ev) => handleOpenOptions(ev, employee)}><MoreVert sx={{ fontSize: '2rem' }} /></Button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                          <Mail color="primary" /> {employee.email}
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "1rem",
+                          }}
+                        >
+                          <Phone color="primary" />
+                          {employee?.phone}
+                        </div>
+                      </td>
+                      <td className={classes.td}>
+                        <div>
+                          <strong> {employee.currentjob?.type}</strong>
+                        </div>
+                        <div>
+                          {employee.currentjob?.position.name}
+                        </div>
+                        <div>{employee?.subtitle}</div>
+                      </td>
+                      <td className={classes.td}>
+                        <Button onClick={(ev) => handleOpenOptions(ev, employee)}><MoreVert sx={{ fontSize: '2rem' }} /></Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </>
         )}
       </Container>

@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { postEmployees, postFile, updateEmployee } from "./employeesSlice";
+import { useDispatch, } from "react-redux";
+import { postFile, updateEmployee } from "./employeesSlice";
 import PersonalInformation from "../../components/PersonalInformation";
 import JobInformation from "../../components/JobInformation";
 import dayjs from "dayjs";
@@ -68,26 +68,26 @@ export default function UpdateEmployee() {
         const postFilePromises = [];
 
         postFilePromises.push(
-            // dispatch(postFile(resumeLocalFile)).then((action) => {
-            //     resumeUrl = action?.payload?.url;
-            //     if (resumeUrl) {
-            //         console.log("Resume URL: " + resumeUrl);
-            //         values.resume = resumeUrl;
-            //     } else {
-            //         console.log("Resume URL not found");
-            //     }
-            // })
+            dispatch(postFile(resumeLocalFile)).then((action) => {
+                resumeUrl = action?.payload?.url;
+                if (resumeUrl) {
+                    console.log("Resume URL: " + resumeUrl);
+                    values.resume = resumeUrl;
+                } else {
+                    console.log("Resume URL not found");
+                }
+            })
         );
         postFilePromises.push(
-            // dispatch(postFile(passportLocalFile)).then((action) => {
-            //     passportUrl = action?.payload?.url;
-            //     if (passportUrl) {
-            //         console.log("Passport URL: " + passportUrl);
-            //         values.image = passportUrl;
-            //     } else {
-            //         console.log("Passport URL not found");
-            //     }
-            // })
+            dispatch(postFile(passportLocalFile)).then((action) => {
+                passportUrl = action?.payload?.url;
+                if (passportUrl) {
+                    console.log("Passport URL: " + passportUrl);
+                    values.image = passportUrl;
+                } else {
+                    console.log("Passport URL not found");
+                }
+            })
         );
         Promise.all(postFilePromises).then(() => {
             dispatch(updateEmployee({ employeeId: employee.id, body: values })).then(() => navigate(-1));

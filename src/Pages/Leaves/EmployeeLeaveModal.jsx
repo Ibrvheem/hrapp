@@ -199,7 +199,7 @@ export default function EmployeeLeaveModal({ childModalOpen, handleChildModalClo
                     onChange={(value) => {
                       formik.setFieldValue("start_date", formatDate(value));
                     }}
-                    renderInput={(params) => <TextField {...params} />}
+                  // renderInput={(params) => <TextField {...params} />}
                   />
                 </LocalizationProvider>{" "}
               </FormControl>
@@ -213,7 +213,7 @@ export default function EmployeeLeaveModal({ childModalOpen, handleChildModalClo
                     onChange={(value) => {
                       formik.setFieldValue("end_date", formatDate(value));
                     }}
-                    renderInput={(params) => <TextField {...params} />}
+                  // renderInput={(params) => <TextField {...params} />}
                   />
                 </LocalizationProvider>{" "}
               </FormControl>

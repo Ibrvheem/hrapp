@@ -125,7 +125,6 @@ export const postFile = createAsyncThunk("resume/post", async (file) => {
   const token = sessionStorage.getItem("token");
   const resume = new FormData();
   resume.append("file", file);
-  console.log("triggered");
   const response = await fetch(`${process.env.REACT_APP_API_URL}/upload`, {
     method: "POST",
     headers: {
@@ -151,11 +150,9 @@ export const employeesSlice = createSlice({
     });
     builder.addCase(getEmployees.fulfilled, (state, action) => {
       state.employeeData = action.payload;
-      console.log(action.payload);
       state.status = "successful";
     });
     builder.addCase(getEmployee.fulfilled, (state, action) => {
-      console.log("fulfiled");
       state.getEmployee = action.payload;
     });
     builder.addCase(getEmployee.rejected, (state, action) => {
@@ -180,7 +177,6 @@ export const employeesSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(updateEmployee.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.status = "successful";
     });
     builder.addCase(updateEmployee.rejected, (state, action) => {
@@ -206,18 +202,15 @@ export const employeesSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(postFile.rejected, (state, action) => {
-      console.log("rejected");
       console.log(action.error);
     });
     builder.addCase(putMinutesLost.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.status = "successful";
     });
     builder.addCase(putMinutesLost.pending, (state) => {
       state.status = "loading";
     });
     builder.addCase(putMinutesLost.rejected, (state, action) => {
-      console.log("rejected");
       console.log(action.error);
     });
   },

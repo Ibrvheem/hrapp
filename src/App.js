@@ -3,9 +3,7 @@ import "./App.css";
 import Layout from "./components/Layout";
 import {
   Route,
-  Router,
   RouterProvider,
-  Routes,
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";

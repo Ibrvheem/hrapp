@@ -19,7 +19,6 @@ import {
   updateEvaluationItem,
 } from "./Appraisals/appraisalsSlice";
 import EvaluationItem from "./Appraisals/evaluationItem";
-import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/loadingScreen";
 
 const useStyles = makeStyles((theme) => {
@@ -54,7 +53,6 @@ const useStyles = makeStyles((theme) => {
 });
 function Appraisal() {
   const classes = useStyles();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { appraisalsData, status } = useSelector((state) => state.appraisals);
   useEffect(() => {
@@ -215,8 +213,8 @@ function Appraisal() {
                       inputProps={
                         itemModal.edit
                           ? {
-                              value: evaluationItem.name,
-                            }
+                            value: evaluationItem.name,
+                          }
                           : {}
                       }
                       label="Evaluation Item"

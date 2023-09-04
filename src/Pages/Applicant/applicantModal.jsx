@@ -1,13 +1,12 @@
-import { Box, Button, FormControl, FormControlLabel, Grid, Modal, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from '@mui/material';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useFormik } from "formik";
 import { makeStyles } from '@mui/styles';
 import { useDispatch } from 'react-redux';
 import { getApplicant, getApplicants, postSchedule, rejectApplicant } from './applicantsSlice';
 import dayjs from 'dayjs';
-import { Navigate } from 'react-router-dom';
 import { Close } from '@mui/icons-material';
 
 const useStyles = makeStyles(() => {
@@ -52,7 +51,7 @@ export default function ApplicantleModal({ modalOpen, handleModalClose, setModal
             dispatch(postSchedule({ id: applicant.id, date: dayjs(values.date).format("YYYY-MM-DDTHH:mm:ss") })),
             dispatch(getApplicants()),
             dispatch(getApplicant(applicant.id))
-        ]).then((values) => console.log(values))
+        ])
     };
     const onSubmitReject = (values) => {
         Promise.all([

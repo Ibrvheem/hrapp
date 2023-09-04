@@ -1,20 +1,10 @@
-import { FormControl, FormGroup, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import React from "react";
-import { useLocation } from "react-router-dom";
 
 function PersonalInformation({ formik }) {
-  const location = useLocation();
-  function formatDate(arg) {
-    const formattedDate = new Date(arg);
-    const year = formattedDate.getFullYear();
-    const month = String(formattedDate.getMonth() + 1).padStart(2, "0");
-    const day = String(formattedDate.getDate()).padStart(2, "0");
-    const formattedDateString = `${year}-${month}-${day}`;
-    return formattedDateString;
-  }
   return (
     <>
       <Typography variant="body2" sx={{ padding: "3rem 0rem" }}>
@@ -53,7 +43,6 @@ function PersonalInformation({ formik }) {
                     onChange={(value) => {
                       formik.setFieldValue("dob", dayjs(value));
                     }}
-                    renderInput={(params) => <TextField {...params} />}
                   />
                 </LocalizationProvider>{" "}
               </FormControl>
