@@ -4,7 +4,7 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm install --ignore-engines
+RUN yarn install
 COPY . ./
 
 # set env
@@ -15,7 +15,7 @@ ENV REACT_APP_API_URL=${REACT_APP_API_URL}
 RUN echo 'REACT_APP_API_URL = '$REACT_APP_API_URL > .env.production
 
 # run build
-RUN npm build
+RUN yarn build
 
 
 # production environment
