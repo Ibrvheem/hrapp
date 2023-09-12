@@ -1,10 +1,10 @@
 # build environment
-FROM node:13.12.0-alpine as build
+FROM node:latest as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
-RUN yarn install --ignore-engines
+RUN npm install --ignore-engines
 COPY . ./
 
 # set env
@@ -12,10 +12,10 @@ ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=${REACT_APP_API_URL}
 
 
-RUN echo 'REACT_APP_API_URL = '$REACT_APP_BASEURL > .env.production
+RUN echo 'REACT_APP_API_URL = '$REACT_APP_API_URL > .env.production
 
 # run build
-RUN yarn build
+RUN npm build
 
 
 # production environment
