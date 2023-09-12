@@ -1,11 +1,10 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React, { useEffect } from "react";
-import EmployeeLeave from "./EmployeeLeave";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { getEmployee } from "../AddEmployees/employeesSlice";
+import { getEmployee } from "../Employee/employeesSlice";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { getLeaves } from "./LeaveSlice";
 
 const useStyles = makeStyles(() => {
   return {
@@ -15,33 +14,26 @@ const useStyles = makeStyles(() => {
       left: "50%",
       transform: "translate(-50%, -50%)",
       width: "40rem",
-      height: "20rem",
+      minHeight: "20rem",
       backgroundColor: "white",
       boxShadow: 24,
       display: "flex",
       justifyContent: "space-between",
       flexDirection: "column",
-      borderRadius: "2rem",
-      padding: "1rem 2rem",
+      gap: "1.5rem",
+      padding: "2rem",
     },
   };
 });
-function SearchEmployeeModal({ modalOpen, handleModalClose }) {
+function SearchEmployeeModal({ modalOpen, handleModalClose, handleChildModalOpen }) {
   const classes = useStyles();
-  const navigate = useNavigate();
-  const [childModalOpen, setChildModalOpen] = React.useState(false);
-  const handleChildModalClose = () => setChildModalOpen(false);
-  const handleChildModalOpen = () => setChildModalOpen(true);
   const dispatch = useDispatch();
   const onSubmit = (values) => {
     dispatch(getEmployee(values.string)).then((action) => {
       const employee = action.payload;
-      if (employee) {
-        handleChildModalOpen();
-      } else {
-        console.log(null);
-      }
+      if (employee) handleChildModalOpen();
     });
+    dispatch(getLeaves());
   };
   const formik = useFormik({
     initialValues: {
@@ -50,15 +42,30 @@ function SearchEmployeeModal({ modalOpen, handleModalClose }) {
     onSubmit,
   });
 
-  console.log(formik.values);
+  const handleSubmit = () => {
+    formik.handleSubmit()
+    handleModalClose()
+  }
+
   return (
     <div>
-      <Modal open={modalOpen} onClose={handleModalClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal
+        open={modalOpen}
+        onClose={handleModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box className={classes.modal}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {/* Add Job Position */}
+            Search Employee
           </Typography>
-          <TextField label="Employee Phone or Email" variant="standard" fullWidth name="string" {...formik.getFieldProps("string")} />
+          <TextField
+            label="Employee Phone or Email"
+            variant="standard"
+            fullWidth
+            name="string"
+            {...formik.getFieldProps("string")}
+          />
           <div
             style={{
               display: "flex",
@@ -75,17 +82,21 @@ function SearchEmployeeModal({ modalOpen, handleModalClose }) {
                 fontWeight: 700,
                 padding: "1rem 3rem",
               }}
-              onClick={formik.handleSubmit}
+              onClick={handleSubmit}
             >
               Submit
             </Button>
-            <Button size="large" variant="outlined" onClick={handleModalClose} sx={{ fontWeight: 700, padding: "1rem 3rem" }}>
+            <Button
+              size="large"
+              variant="outlined"
+              onClick={handleModalClose}
+              sx={{ fontWeight: 700, padding: "1rem 3rem" }}
+            >
               Cancel
             </Button>
           </div>
         </Box>
       </Modal>
-      <EmployeeLeave handleChildModalClose={handleChildModalClose} childModalOpen={childModalOpen} />
     </div>
   );
 }

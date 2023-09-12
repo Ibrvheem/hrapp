@@ -1,11 +1,14 @@
-import { create } from "@mui/material/styles/createTransitions";
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
 
-const initialState = [];
+const initialState = {
+  user: {},
+  status: "idle",
+};
 
 export const getUser = createAsyncThunk("auth/getUser", async (credentials) => {
-  const response = await fetch("https://api.hr.itcentral.ng/login", {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -14,11 +17,16 @@ export const getUser = createAsyncThunk("auth/getUser", async (credentials) => {
   });
   const data = await response.json();
   if (response.ok) {
-    localStorage.setItem("token", data.token);
+    sessionStorage.setItem("token", data.token);
     return data;
   } else {
     throw new Error(data.error);
   }
+});
+
+export const logOut = createAsyncThunk("auth/logout", async () => {
+  sessionStorage.removeItem("token");
+  window.location.href = window.location.origin;
 });
 
 export const authSlice = createSlice({
@@ -28,32 +36,20 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
-        console.log("loading");
+        state.status = "loading";
       })
       .addCase(getUser.fulfilled, (state, action) => {
-        const user = action.payload;
-        console.log("success");
+        state.user = action.payload;
+        state.status = "successful";
       })
-
       .addCase(getUser.rejected, (state, action) => {
         const error = action.error.message;
-        console.log("wrong password");
+        state.status = "failed";
+        console.log(error);
       });
+    builder.addCase(logOut.fulfilled, () => {
+      console.log("Logged Out");
+    });
   },
 });
 export default authSlice.reducer;
-// export const getUser = createAsyncThunk("auth/getUser", async (credentials) => {
-//   const response = await fetch("https://api.hr.itcentral.ng/login", {
-//     method: "POST",
-//     headers: {
-//       "Content-type": "application/json",
-//     },
-//     body: JSON.stringify(credentials),
-//   });
-//   const data = await response.json();
-//   if (response.ok) {
-//     return data;
-//   } else {
-//     throw new Error(data.error);
-//   }
-// });
